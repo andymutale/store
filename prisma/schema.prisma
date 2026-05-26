@@ -433,3 +433,4 @@ model ShippingRate {
 
   zone ShippingZone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
 }
+
