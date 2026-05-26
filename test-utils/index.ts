@@ -94,9 +94,9 @@ export async function seedProduct({
 }) {
   const product = await testDb.product.create({
     data: {
-      name:         "Test Shoe",
-      slug:         `test-shoe-${Date.now()}`,
-      description:  "A test product",
+      name:        "Test Shoe",
+      slug:        `test-shoe-${Date.now()}`,
+      description: "A test product",
       priceInCents,
       categoryId,
       brandId,
@@ -114,7 +114,10 @@ export async function seedProduct({
 }
 
 /** Create a user with a hashed password. */
-export async function seedUser(email = "test@example.com", password = "password123") {
+export async function seedUser(
+  email = process.env.SENDER_EMAIL || "test@example.com", 
+  password = "password123"
+) {
   const { hashPassword } = await import("@/lib/auth")
   return testDb.user.create({
     data: {
