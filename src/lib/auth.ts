@@ -4,6 +4,7 @@
 // Call these from Server Actions and Server Components only.
 
 import { cookies } from "next/headers"
+import { redirect } from "next/navigation" // ✅ FIXED: Static top-level import tells TS that redirect returns 'never'
 import db from "@/lib/db"
 
 export const SESSION_COOKIE = "bb_session"
@@ -109,10 +110,13 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 // Use in account page layouts.
 export async function requireUser(redirectTo = "/login"): Promise<CurrentUser> {
   const user = await getCurrentUser()
+  
   if (!user) {
-    const { redirect } = await import("next/navigation")
+    // ✅ FIXED: Cleaned up inline dynamic import and called the statically verified function directly
     redirect(redirectTo)
   }
+  
+  // ✅ FIXED: TypeScript now confidently infers that user cannot be null here
   return user
 }
 

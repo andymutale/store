@@ -97,6 +97,7 @@ model Product {
   // SEO (fall back to name / shortDescription when null)
   metaTitle       String?
   metaDescription String?
+  specs           String? // JSON: [{ label: string, value: string }]
 
   categoryId String
   brandId    String?

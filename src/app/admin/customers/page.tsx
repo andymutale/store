@@ -1,17 +1,10 @@
-import db from "@/lib/db"
+﻿import db from "@/lib/db"
 import { formatCurrency, formatNumber } from "@/lib/formatters"
 import { MoreVertical } from "lucide-react"
 import { PageHeader } from "../_components/PageHeader"
 import { DeleteUserItem } from "./_components/UserMenuItems"
 
-type UserRow = {
-  id: string
-  email: string
-  createdAt: Date
-  orders: { pricePaidInCents: number }[]
-}
-
-export default function AdminCustomersPage() {
+export default async function AdminCustomersPage() {
   return (
     <>
       <PageHeader>Customers</PageHeader>
@@ -21,12 +14,17 @@ export default function AdminCustomersPage() {
 }
 
 async function CustomersTable() {
-  const users: UserRow[] = await db.user.findMany({
+  const users = await db.user.findMany({
     select: {
       id: true,
       email: true,
       createdAt: true,
-      orders: { select: { pricePaidInCents: true } },
+      orders: { 
+        select: { 
+          // ✅ FIXED: Selected the actual field from your schema
+          totalInCents: true 
+        } 
+      },
     },
     orderBy: { createdAt: "desc" },
   })
@@ -47,14 +45,13 @@ async function CustomersTable() {
           </tr>
         </thead>
         <tbody className="divide-y divide-border-color">
-          {users.map((u: UserRow) => (
+          {users.map((u) => (
             <tr key={u.id} className="hover:bg-off-white transition-colors">
               <td className="px-4 py-3 font-medium text-text-primary">{u.email}</td>
               <td className="px-4 py-3 text-text-secondary">{formatNumber(u.orders.length)}</td>
               <td className="px-4 py-3 text-text-secondary">
-                {formatCurrency(
-                  u.orders.reduce((sum: number, o: { pricePaidInCents: number }) => sum + o.pricePaidInCents, 0) / 100
-                )}
+                {/* ✅ FIXED: Reducing u.orders using o.totalInCents */}
+                {formatCurrency(u.orders.reduce((sum, o) => sum + o.totalInCents, 0) / 100)}
               </td>
               <td className="px-4 py-3">
                 <details className="relative">

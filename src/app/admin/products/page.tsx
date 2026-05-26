@@ -11,7 +11,8 @@ export default async function AdminProductsPage() {
       category: { select: { name: true } },
       brand:    { select: { name: true } },
       variants: { select: { stock: true, isActive: true } },
-      _count:   { select: { orderItems: true } },
+      // ✅ FIXED: Changed 'orderItems' to match Prisma relation type model 'OrderItem'
+      _count:   { select: { OrderItem: true } },
     },
     orderBy: { name: "asc" },
   })
@@ -73,7 +74,8 @@ export default async function AdminProductsPage() {
                         {totalStock}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right text-text-secondary">{p._count.orderItems}</td>
+                    {/* ✅ FIXED: Access count using capital 'OrderItem' identifier */}
+                    <td className="px-4 py-3 text-right text-text-secondary">{p._count.OrderItem}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1 justify-end">
                         <Link href={`/admin/products/${p.id}/edit`}
@@ -81,7 +83,8 @@ export default async function AdminProductsPage() {
                           <Pencil className="w-3.5 h-3.5" />
                         </Link>
                         <ActiveToggleItem id={p.id} isAvailableForPurchase={p.isAvailableForPurchase} />
-                        <DeleteItem id={p.id} disabled={p._count.orderItems > 0} />
+                        {/* ✅ FIXED: Adjusted delete protection toggle check */}
+                        <DeleteItem id={p.id} disabled={p._count.OrderItem > 0} />
                       </div>
                     </td>
                   </tr>

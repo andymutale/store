@@ -82,7 +82,7 @@ export async function createOrder(formData: FormData): Promise<CreateOrderResult
   const count = await db.order.count({ where: { orderNumber: { startsWith: `BB-${year}-` } } })
   const orderNumber = `BB-${year}-${String(count + 1).padStart(5, "0")}`
 
-  // 6. Create Order in DB
+  // 6. Resolve user
   // We create a placeholder User record keyed on email (guest checkout).
   // When full auth is added, this merges with the real User on login.
   let user = await db.user.findUnique({ where: { email: data.email } })
@@ -98,59 +98,62 @@ export async function createOrder(formData: FormData): Promise<CreateOrderResult
     })
   }
 
+  // 7. Create shipping address row first so we can pass shippingAddressId
+  //    to the order as a raw FK (required when userId is also a raw FK).
+  const shippingAddress = await db.address.create({
+    data: {
+      userId:     user.id,
+      firstName:  data.firstName,
+      lastName:   data.lastName,
+      line1:      data.line1,
+      line2:      data.line2 || null,
+      city:       data.city,
+      province:   data.province,
+      postalCode: data.postalCode,
+      country:    "ZA",
+      phone:      data.phone,
+    },
+  })
+
+  // 8. Create Order in DB
   const order = await db.order.create({
     data: {
       orderNumber,
-      userId:          user.id,
+      userId:            user.id,
       subtotalInCents,
       shippingInCents,
-      discountInCents: 0,
+      discountInCents:   0,
       totalInCents,
-      status:          "pending",
-      paymentStatus:   "unpaid",
-      paymentMethod:   "stripe_card",
-      shippingMethod:  `${shippingRate.zone.name} — ${shippingRate.name}`,
-      customerNote:    data.customerNote || null,
-
-      // Snapshot shipping address directly on Order (no user address record for guests)
-      shippingAddress: {
-        create: {
-          userId:    user.id,
-          firstName: data.firstName,
-          lastName:  data.lastName,
-          line1:     data.line1,
-          line2:     data.line2 || null,
-          city:      data.city,
-          province:  data.province,
-          postalCode: data.postalCode,
-          country:   "ZA",
-          phone:     data.phone,
-        },
-      },
+      status:            "pending",
+      paymentStatus:     "unpaid",
+      paymentMethod:     "stripe_card",
+      shippingMethod:    `${shippingRate.zone.name} — ${shippingRate.name}`,
+      customerNote:      data.customerNote || null,
+      shippingAddressId: shippingAddress.id,
 
       // Line items with price snapshots
       items: {
         create: items.map(item => ({
-          productId:       item.product.id,
-          variantId:       item.variant.id,
-          productName:     item.product.name,
-          variantSku:      item.variant.sku,
-          size:            item.variant.size,
-          color:           item.variant.color,
-          quantity:        item.quantity,
+          productId:        item.product.id,
+          variantId:        item.variant.id,
+          productName:      item.product.name,
+          variantSku:       item.variant.sku,
+          size:             item.variant.size,
+          color:            item.variant.color,
+          quantity:         item.quantity,
           unitPriceInCents: resolveUnitPrice(item),
-          totalInCents:    resolveUnitPrice(item) * item.quantity,
+          totalInCents:     resolveUnitPrice(item) * item.quantity,
         })),
       },
     },
   })
 
-  // 7. Stripe PaymentIntent (ZAR)
+  // 9. Stripe PaymentIntent (ZAR)
   const paymentIntent = await stripe.paymentIntents.create({
     amount:   totalInCents,
     currency: "zar",
     metadata: {
-      orderId:    order.id,
+      orderId:       order.id,
       orderNumber,
       sessionId,            // used by webhook to clear the cart
       customerEmail: data.email,
@@ -160,8 +163,9 @@ export async function createOrder(formData: FormData): Promise<CreateOrderResult
   })
 
   if (!paymentIntent.client_secret) {
-    // Roll back the order if Stripe failed
+    // Roll back the order and address if Stripe failed
     await db.order.delete({ where: { id: order.id } })
+    await db.address.delete({ where: { id: shippingAddress.id } })
     return { ok: false, error: "Payment gateway error. Please try again." }
   }
 

@@ -3,55 +3,49 @@
 import db from "@/lib/db"
 import { z } from "zod"
 import fs from "fs/promises"
-import { redirect } from "next/navigation"
+import { redirect, notFound } from "next/navigation"
 import { revalidatePath } from "next/cache"
-import { notFound } from "next/navigation"
 import { slugify } from "@/lib/formatters"
 
-// ─── VARIANT SCHEMA ──────────────────────────────────────────────────────────
-// Variants arrive as a JSON string from the VariantsEditor hidden input.
+// ─── SCHEMAS ────────────────────────────────────────────────────────────────
 
 const variantSchema = z.object({
-  id:          z.string().optional(),       // existing DB id (for updates)
-  sku:         z.string().min(1, "SKU required"),
-  size:        z.string().optional(),
-  color:       z.string().optional(),
-  stock:       z.coerce.number().int().min(0).default(0),
+  id:           z.string().optional(),
+  sku:          z.string().min(1, "SKU required"),
+  size:         z.string().optional(),
+  color:        z.string().optional(),
+  stock:        z.coerce.number().int().min(0).default(0),
   priceInCents: z.coerce.number().int().optional(),
-  sortOrder:   z.coerce.number().int().default(0),
-  isActive:    z.boolean().default(true),
+  sortOrder:    z.coerce.number().int().default(0),
+  isActive:     z.boolean().default(true),
 })
-
-// ─── PRODUCT SCHEMA ───────────────────────────────────────────────────────────
 
 const productSchema = z.object({
-  name:                  z.string().min(1, "Name is required"),
-  slug:                  z.string().min(1).regex(/^[a-z0-9-]+$/),
-  shortDescription:      z.string().optional(),
-  description:           z.string().min(1, "Description is required"),
-  priceInCents:          z.coerce.number().int().min(1, "Price is required"),
-  comparePriceInCents:   z.coerce.number().int().optional(),
-  categoryId:            z.string().min(1, "Category is required"),
-  brandId:               z.string().optional(),
-  gender:                z.string().optional(),
-  sport:                 z.string().optional(),
-  sizeSystem:            z.string().optional(),
+  name:                   z.string().min(1, "Name is required"),
+  slug:                   z.string().min(1).regex(/^[a-z0-9-]+$/),
+  description:            z.string().min(1, "Description is required"),
+  priceInCents:           z.coerce.number().int().min(1, "Price is required"),
+  comparePriceInCents:    z.coerce.number().int().optional(),
+  categoryId:             z.string().min(1, "Category is required"),
+  brandId:                z.string().optional(),
+  gender:                 z.string().optional(),
+  sport:                  z.string().optional(),
+  sizeSystem:             z.string().optional(),
   isAvailableForPurchase: z.coerce.boolean().default(false),
-  isFeatured:            z.coerce.boolean().default(false),
-  isNew:                 z.coerce.boolean().default(false),
-  metaTitle:             z.string().optional(),
-  metaDescription:       z.string().optional(),
-  // variants arrive as JSON string
-  variants:              z.string().min(1, "At least one variant is required"),
+  isFeatured:             z.coerce.boolean().default(false),
+  isNew:                  z.coerce.boolean().default(false),
+  metaTitle:              z.string().optional(),
+  metaDescription:        z.string().optional(),
+  variants:               z.string().min(1, "At least one variant is required"),
 })
+
+// ─── HELPERS ────────────────────────────────────────────────────────────────
 
 function revalidate() {
   revalidatePath("/admin/products")
   revalidatePath("/")
   revalidatePath("/products")
 }
-
-// ─── SAVE UPLOADED IMAGE ──────────────────────────────────────────────────────
 
 async function saveImage(file: File): Promise<string> {
   await fs.mkdir("public/products", { recursive: true })
@@ -60,59 +54,48 @@ async function saveImage(file: File): Promise<string> {
   return path
 }
 
-// ─── ADD PRODUCT ─────────────────────────────────────────────────────────────
-
-export async function addProduct(prevState: unknown, formData: FormData) {
+function normalizeFormData(formData: FormData) {
   const raw = Object.fromEntries(formData.entries())
 
-  // Normalise booleans from checkboxes
-  raw.isAvailableForPurchase = formData.get("isAvailableForPurchase") === "on" ? "true" : "false"
-  raw.isFeatured             = formData.get("isFeatured")             === "on" ? "true" : "false"
-  raw.isNew                  = formData.get("isNew")                  === "on" ? "true" : "false"
+  raw.isAvailableForPurchase = String(formData.get("isAvailableForPurchase") === "on")
+  raw.isFeatured             = String(formData.get("isFeatured") === "on")
+  raw.isNew                  = String(formData.get("isNew") === "on")
 
-  // Auto-generate slug from name if blank
   if (!raw.slug) raw.slug = slugify(raw.name as string)
 
-  // Strip empty optional fields
-  if (!raw.brandId)          delete raw.brandId
-  if (!raw.comparePriceInCents) delete raw.comparePriceInCents
-  if (!raw.metaTitle)        delete raw.metaTitle
-  if (!raw.metaDescription)  delete raw.metaDescription
+  const optionals = ["brandId", "comparePriceInCents", "metaTitle", "metaDescription"]
+  optionals.forEach(field => { if (!raw[field]) delete raw[field] })
 
-  const result = productSchema.safeParse(raw)
+  return raw
+}
+
+// ─── ACTIONS ────────────────────────────────────────────────────────────────
+
+export async function addProduct(prevState: unknown, formData: FormData) {
+  const result = productSchema.safeParse(normalizeFormData(formData))
   if (!result.success) return result.error.formErrors.fieldErrors
 
-  // Parse and validate variants
   let variants: z.infer<typeof variantSchema>[]
   try {
-    const parsed = JSON.parse(result.data.variants)
-    const vResult = z.array(variantSchema).safeParse(parsed)
-    if (!vResult.success) return { variants: ["Invalid variant data"] }
-    variants = vResult.data
+    variants = z.array(variantSchema).parse(JSON.parse(result.data.variants))
   } catch {
-    return { variants: ["Could not parse variants"] }
+    return { variants: ["Invalid variant data"] }
   }
-
   if (variants.length === 0) return { variants: ["Add at least one size/variant"] }
 
-  // Handle image uploads
-  const imageFiles = formData.getAll("images") as File[]
-  const validImages = imageFiles.filter(f => f.size > 0)
-
+  const validImages = (formData.getAll("images") as File[]).filter(f => f.size > 0)
   const { variants: _v, ...productData } = result.data
 
   await db.product.create({
     data: {
       ...productData,
       images: {
-        create: await Promise.all(
-          validImages.map(async (file, i) => ({
-            url:       await saveImage(file),
-            altText:   `${productData.name} image ${i + 1}`,
-            sortOrder: i,
-            isPrimary: i === 0,
-          }))
-        ),
+        create: await Promise.all(validImages.map(async (file, i) => ({
+          url:       await saveImage(file),
+          altText:   `${productData.name} image ${i + 1}`,
+          sortOrder: i,
+          isPrimary: i === 0,
+        }))),
       },
       variants: {
         create: variants.map((v, i) => ({
@@ -132,82 +115,64 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   redirect("/admin/products")
 }
 
-// ─── UPDATE PRODUCT ──────────────────────────────────────────────────────────
-
 export async function updateProduct(id: string, prevState: unknown, formData: FormData) {
-  const raw = Object.fromEntries(formData.entries())
-  raw.isAvailableForPurchase = formData.get("isAvailableForPurchase") === "on" ? "true" : "false"
-  raw.isFeatured             = formData.get("isFeatured")             === "on" ? "true" : "false"
-  raw.isNew                  = formData.get("isNew")                  === "on" ? "true" : "false"
-  if (!raw.slug) raw.slug = slugify(raw.name as string)
-  if (!raw.brandId)             delete raw.brandId
-  if (!raw.comparePriceInCents) delete raw.comparePriceInCents
-  if (!raw.metaTitle)           delete raw.metaTitle
-  if (!raw.metaDescription)     delete raw.metaDescription
-
-  const result = productSchema.safeParse(raw)
+  const result = productSchema.safeParse(normalizeFormData(formData))
   if (!result.success) return result.error.formErrors.fieldErrors
 
   let variants: z.infer<typeof variantSchema>[]
   try {
-    const parsed = JSON.parse(result.data.variants)
-    const vResult = z.array(variantSchema).safeParse(parsed)
-    if (!vResult.success) return { variants: ["Invalid variant data"] }
-    variants = vResult.data
+    variants = z.array(variantSchema).parse(JSON.parse(result.data.variants))
   } catch {
-    return { variants: ["Could not parse variants"] }
+    return { variants: ["Invalid variant data"] }
   }
-
   if (variants.length === 0) return { variants: ["Add at least one size/variant"] }
 
   const existing = await db.product.findUnique({ where: { id } })
   if (!existing) return notFound()
 
-  const imageFiles = formData.getAll("images") as File[]
-  const validImages = imageFiles.filter(f => f.size > 0)
-
+  const validImages = (formData.getAll("images") as File[]).filter(f => f.size > 0)
   const { variants: _v, ...productData } = result.data
 
-  // Sync variants: upsert existing (by id), create new ones (no id), delete removed ones
-  const incomingIds  = variants.filter(v => v.id).map(v => v.id!)
+  const incomingIds = variants.filter(v => v.id).map(v => v.id!)
   const existingVariants = await db.productVariant.findMany({ where: { productId: id } })
-  const toDelete = existingVariants.filter(ev => !incomingIds.includes(ev.id))
+  const toDeleteIds = existingVariants.filter(ev => !incomingIds.includes(ev.id)).map(v => v.id)
 
-  await db.$transaction([
-    // Update product base fields
-    db.product.update({ where: { id }, data: productData }),
+  await db.$transaction(async (tx) => {
+    await tx.product.update({ where: { id }, data: productData })
 
-    // Delete removed variants (only safe if no order items reference them)
-    ...toDelete.map(v =>
-      db.productVariant.delete({ where: { id: v.id } })
-    ),
+    if (toDeleteIds.length > 0) {
+      await tx.productVariant.deleteMany({ where: { id: { in: toDeleteIds } } })
+    }
 
-    // Upsert variants
-    ...variants.map((v, i) =>
-      v.id
-        ? db.productVariant.update({
-            where: { id: v.id },
-            data: { sku: v.sku, size: v.size || null, color: v.color || null, stock: v.stock, priceInCents: v.priceInCents || null, sortOrder: v.sortOrder ?? i, isActive: v.isActive },
-          })
-        : db.productVariant.create({
-            data: { productId: id, sku: v.sku, size: v.size || null, color: v.color || null, stock: v.stock, priceInCents: v.priceInCents || null, sortOrder: v.sortOrder ?? i, isActive: v.isActive },
-          })
-    ),
-  ])
+    for (const [i, v] of variants.entries()) {
+      const variantData = {
+        sku: v.sku,
+        size: v.size || null,
+        color: v.color || null,
+        stock: v.stock,
+        priceInCents: v.priceInCents || null,
+        sortOrder: v.sortOrder ?? i,
+        isActive: v.isActive,
+      }
 
-  // Add any new images
+      if (v.id) {
+        await tx.productVariant.update({ where: { id: v.id }, data: variantData })
+      } else {
+        await tx.productVariant.create({ data: { productId: id, ...variantData } })
+      }
+    }
+  })
+
   if (validImages.length > 0) {
     const existingCount = await db.productImage.count({ where: { productId: id } })
     await db.productImage.createMany({
-      data: await Promise.all(
-        validImages.map(async (file, i) => ({
-          productId: id,
-          url:       await saveImage(file),
-          altText:   `${productData.name} image`,
-          sortOrder: existingCount + i,
-          isPrimary: existingCount === 0 && i === 0,
-        }))
-      ),
+      data: await Promise.all(validImages.map(async (file, i) => ({
+        productId: id,
+        url:       await saveImage(file),
+        altText:   `${productData.name} image`,
+        sortOrder: existingCount + i,
+        isPrimary: existingCount === 0 && i === 0,
+      }))),
     })
   }
 
@@ -215,29 +180,20 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
   redirect("/admin/products")
 }
 
-// ─── TOGGLE AVAILABILITY ──────────────────────────────────────────────────────
-
 export async function toggleProductAvailability(id: string, isAvailableForPurchase: boolean) {
   await db.product.update({ where: { id }, data: { isAvailableForPurchase } })
   revalidate()
 }
 
-// ─── DELETE PRODUCT ───────────────────────────────────────────────────────────
-
 export async function deleteProduct(id: string) {
   const product = await db.product.findUnique({
     where: { id },
-    include: {
-      images: true,
-      _count: { select: { orderItems: true } },
-    },
+    include: { images: true, _count: { select: { OrderItem: true } } },
   })
+  
   if (!product) return notFound()
-  if (product._count.orderItems > 0) {
-    throw new Error("Cannot delete a product that has order history.")
-  }
+  if (product._count.OrderItem > 0) throw new Error("Cannot delete a product with order history.")
 
-  // Delete images from disk
   for (const img of product.images) {
     await fs.unlink(`public${img.url}`).catch(() => {})
   }
@@ -246,20 +202,32 @@ export async function deleteProduct(id: string) {
   revalidate()
 }
 
-// ─── DELETE PRODUCT IMAGE ─────────────────────────────────────────────────────
+// ─── IMAGE ACTIONS ──────────────────────────────────────────────────────────
 
-export async function deleteProductImage(imageId: string, productId: string) {
-  const image = await db.productImage.findUnique({ where: { id: imageId } })
+// ✅ IMPLEMENTED BEST PRACTICE: Performs defensive disk unlinking prior to database deletion
+export async function deleteProductImage(id: string) {
+  const image = await db.productImage.findUnique({ where: { id } })
   if (!image) return notFound()
-  await fs.unlink(`public${image.url}`).catch(() => {})
-  await db.productImage.delete({ where: { id: imageId } })
-  revalidatePath(`/admin/products/${productId}/edit`)
+
+  // Remove physical file safely from storage directory
+  await fs.unlink(`public${image.url}`).catch((err) => {
+    console.warn(`File system unlinking skipped or failed for: ${image.url}`, err.message)
+  })
+
+  // Delete matching row from database
+  await db.productImage.delete({ where: { id } })
+  
+  revalidate()
 }
 
 export async function setPrimaryImage(imageId: string, productId: string) {
-  await db.$transaction([
-    db.productImage.updateMany({ where: { productId }, data: { isPrimary: false } }),
-    db.productImage.update({ where: { id: imageId }, data: { isPrimary: true } }),
-  ])
-  revalidatePath(`/admin/products/${productId}/edit`)
+  await db.productImage.updateMany({
+    where: { productId },
+    data: { isPrimary: false },
+  })
+  await db.productImage.update({
+    where: { id: imageId },
+    data: { isPrimary: true },
+  })
+  revalidate()
 }

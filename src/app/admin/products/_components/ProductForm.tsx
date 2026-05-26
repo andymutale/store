@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useTransition } from "react" // ✅ Added useTransition
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"
 import Image from "next/image"
@@ -32,7 +32,7 @@ type Product = {
   metaTitle?:            string | null
   metaDescription?:      string | null
   images:                ProductImage[]
-  variants: Variant[]
+  variants:              Variant[]
 }
 
 type Props = {
@@ -76,21 +76,41 @@ export function ProductForm({ product, categories, brands, action }: Props) {
   const [priceInCents, setPriceInCents] = useState<number | undefined>(product?.priceInCents)
   const [nameValue, setNameValue]       = useState(product?.name ?? "")
   const [deletingImageId, setDeletingImageId] = useState<string | null>(null)
+  
+  // ✅ Initialize transition hook for handling asynchronous server mutations
+  const [isPending, startTransition] = useTransition()
 
   // Organise categories into parent → children for grouped select
   const topLevel = categories.filter(c => !c.parentId)
   const childrenOf = (id: string) => categories.filter(c => c.parentId === id)
 
-  async function handleDeleteImage(imageId: string) {
+  // ✅ Fixed parameter mapping and wrapped inside UI transition tracker
+  function handleDeleteImage(imageId: string) {
     if (!product?.id) return
-    setDeletingImageId(imageId)
-    await deleteProductImage(imageId, product.id)
-    setDeletingImageId(null)
+
+    startTransition(async () => {
+      try {
+        setDeletingImageId(imageId)
+        await deleteProductImage(imageId)
+      } catch (err) {
+        console.error("Failed to remove image:", err)
+      } finally {
+        setDeletingImageId(null)
+      }
+    })
   }
 
-  async function handleSetPrimary(imageId: string) {
+  // ✅ Wrapped background data re-index modifications in structural state updates
+  function handleSetPrimary(imageId: string) {
     if (!product?.id) return
-    await setPrimaryImage(imageId, product.id)
+
+    startTransition(async () => {
+      try {
+        await setPrimaryImage(imageId, product.id)
+      } catch (err) {
+        console.error("Failed to re-assign primary thumbnail index:", err)
+      }
+    })
   }
 
   return (
@@ -220,13 +240,14 @@ export function ProductForm({ product, categories, brands, action }: Props) {
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
                   {!img.isPrimary && (
                     <button type="button" title="Set as primary"
+                      disabled={isPending}
                       onClick={() => handleSetPrimary(img.id)}
-                      className="p-1 bg-white/90 rounded text-brand-gold hover:bg-white">
+                      className="p-1 bg-white/90 rounded text-brand-gold hover:bg-white disabled:opacity-50">
                       <Star className="w-3 h-3" />
                     </button>
                   )}
                   <button type="button" title="Delete image"
-                    disabled={deletingImageId === img.id}
+                    disabled={isPending || deletingImageId === img.id}
                     onClick={() => handleDeleteImage(img.id)}
                     className="p-1 bg-white/90 rounded text-brand-red hover:bg-white disabled:opacity-50">
                     <Trash2 className="w-3 h-3" />
