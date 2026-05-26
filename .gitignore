@@ -11,6 +11,7 @@ build/
 # Prisma Database
 /prisma/dev.db
 /prisma/dev.db-journal
+prisma/prisma/dev.db
 
 # Environment Variables
 .env
