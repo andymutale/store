@@ -115,7 +115,7 @@ export async function seedProduct({
 
 /** Create a user with a hashed password. */
 export async function seedUser(
-  email = process.env.SENDER_EMAIL || "test@example.com", 
+  email = process.env.SENDER_EMAIL ?? "test@example.com",
   password = "password123"
 ) {
   const { hashPassword } = await import("@/lib/auth")
