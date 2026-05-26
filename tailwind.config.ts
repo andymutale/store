@@ -1,0 +1,66 @@
+import type { Config } from "tailwindcss"
+import defaultTheme from "tailwindcss/defaultTheme"
+
+const config: Config = {
+  darkMode: ["class"],
+  content: ["./src/**/*.{ts,tsx}"],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ["Inter", "system-ui", ...defaultTheme.fontFamily.sans],
+      },
+      maxWidth: {
+        content: "1320px",   // design's max page width
+      },
+      // All colours reference CSS variables so you change one place
+      colors: {
+        background:          "hsl(var(--background))",
+        foreground:          "hsl(var(--foreground))",
+        card:                { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
+        popover:             { DEFAULT: "hsl(var(--popover))", foreground: "hsl(var(--popover-foreground))" },
+        primary:             { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
+        secondary:           { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
+        muted:               { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
+        accent:              { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
+        destructive:         { DEFAULT: "hsl(var(--destructive))", foreground: "hsl(var(--destructive-foreground))" },
+        border:              "hsl(var(--border))",
+        input:               "hsl(var(--input))",
+        ring:                "hsl(var(--ring))",
+        // Brand colours (reference CSS vars so both Tailwind classes & inline styles stay in sync)
+        "brand-blue":        "var(--brand-blue)",
+        "brand-blue-dark":   "var(--brand-blue-dark)",
+        "brand-blue-light":  "var(--brand-blue-light)",
+        "brand-blue-mid":    "var(--brand-blue-mid)",
+        "brand-red":         "var(--brand-red)",
+        "brand-gold":        "var(--brand-gold)",
+        "brand-green":       "var(--brand-green)",
+        "light-grey":        "var(--light-grey)",
+        "off-white":         "var(--off-white)",
+        "text-primary":      "var(--text-primary)",
+        "text-secondary":    "var(--text-secondary)",
+        "text-muted":        "var(--text-muted)",
+      },
+      borderColor: {
+        brand: "var(--border-color)",
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": { from: { height: "0" }, to: { height: "var(--radix-accordion-content-height)" } },
+        "accordion-up":   { from: { height: "var(--radix-accordion-content-height)" }, to: { height: "0" } },
+        scroll: { from: { transform: "translateX(0)" }, to: { transform: "translateX(-50%)" } },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up":   "accordion-up 0.2s ease-out",
+        "scroll":         "scroll 30s linear infinite",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+}
+
+export default config

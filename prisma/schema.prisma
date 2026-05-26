@@ -1,0 +1,432 @@
+// ─── PRISMA SCHEMA — Brian Bands Sportswear ──────────────────────────────────
+// SQLite for development. Switching to PostgreSQL for production:
+//   1. Change provider to "postgresql"
+//   2. Update DATABASE_URL to a postgres:// connection string
+//   3. All model definitions below stay identical — Prisma handles the dialect.
+//
+// After any schema change:  npx prisma migrate dev --name <what-changed>
+// Seed the database:        node prisma/seed.js
+// Open Prisma Studio:       npx prisma studio
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── CATEGORY ────────────────────────────────────────────────────────────────
+// Self-referential tree — parentId = null means top-level.
+//
+// Example tree:
+//   Running                    (parentId: null)
+//   ├─ Men's Running Shoes     (parentId: Running.id)
+//   └─ Women's Running Shoes   (parentId: Running.id)
+//   Tennis                     (parentId: null)
+//   ├─ Men's Tennis Shoes
+//   ├─ Women's Tennis Shoes
+//   └─ Tennis Rackets
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  imageUrl    String?
+  parentId    String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryTree")
+  products Product[]
+}
+
+// ─── BRAND ───────────────────────────────────────────────────────────────────
+
+model Brand {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  logoUrl     String?
+  description String?
+  websiteUrl  String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+}
+
+// ─── PRODUCT ─────────────────────────────────────────────────────────────────
+// The base product record — no stock here. Stock lives on ProductVariant rows.
+//
+// gender:     "men" | "women" | "unisex" | "youth"
+// sport:      "running" | "tennis" | "football" | "hockey" | "netball" | "general"
+// sizeSystem: "uk_shoe" | "eu_shoe" | "clothing" | "none"
+//             Drives how sizes are displayed and sorted on the storefront.
+//
+// priceInCents is the default price. Individual variants can override it
+// via ProductVariant.priceInCents when a size carries a different price.
+
+model Product {
+  id               String  @id @default(uuid())
+  name             String
+  slug             String  @unique
+  description      String
+  shortDescription String?
+
+  // Pricing (Rand cents — R1 = 100)
+  priceInCents        Int
+  comparePriceInCents Int? // "was" price shown crossed out on storefront
+
+  // Product attributes used for filtering on the storefront
+  gender     String? // "men" | "women" | "unisex" | "youth"
+  sport      String? // "running" | "tennis" | "football" | "hockey" | "netball" | "general"
+  sizeSystem String? // "uk_shoe" | "eu_shoe" | "clothing" | "none"
+
+  // Merchandising flags
+  isAvailableForPurchase Boolean @default(true)
+  isFeatured             Boolean @default(false)
+  isNew                  Boolean @default(false)
+
+  // SEO (fall back to name / shortDescription when null)
+  metaTitle       String?
+  metaDescription String?
+
+  categoryId String
+  brandId    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category      Category         @relation(fields: [categoryId], references: [id])
+  brand         Brand?           @relation(fields: [brandId], references: [id])
+  images        ProductImage[]
+  variants      ProductVariant[]
+  cartItems     CartItem[]
+  wishlistItems WishlistItem[]
+  reviews       Review[]
+  OrderItem     OrderItem[]
+}
+
+// ─── PRODUCT IMAGE ────────────────────────────────────────────────────────────
+// Multiple images per product.
+// isPrimary = true → shown in product cards and as the hero on the PDP.
+// All images appear in the PDP gallery, sorted by sortOrder ascending.
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  productId String
+  url       String
+  altText   String?
+  sortOrder Int      @default(0)
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+// ─── PRODUCT VARIANT ──────────────────────────────────────────────────────────
+// One row per size/colour combination.
+// This is where stock is tracked and where the customer's cart item points.
+//
+// Examples:
+//   Adizero Boston 13 – Men  |  size: "UK 9"   |  color: "Cloud White"  |  stock: 4
+//   Bafana Home Jersey        |  size: "L"       |  color: null           |  stock: 12
+//   Wilson Ultra 100          |  size: null      |  color: null           |  stock: 3
+//
+// sku must be unique across all variants in the store.
+// priceInCents is null when the variant uses the parent Product price.
+
+model ProductVariant {
+  id           String   @id @default(uuid())
+  productId    String
+  sku          String   @unique
+  size         String? // "UK 6" | "S" | "XL" | "Senior" | null (no size)
+  color        String? // "Cloud White" | "Core Black" | null (no colour choice)
+  stock        Int      @default(0)
+  priceInCents Int? // null → inherit from Product.priceInCents
+  sortOrder    Int      @default(0) // controls order in the size picker
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+}
+
+// ─── USER ────────────────────────────────────────────────────────────────────
+// role: "customer" | "admin"
+// passwordHash is nullable to support magic-link / social auth later.
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String?
+  firstName     String?
+  lastName      String?
+  phone         String?
+  role          String   @default("customer")
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions      Session[]
+  addresses     Address[]
+  orders        Order[]
+  cartItems     CartItem[]
+  wishlistItems WishlistItem[]
+  reviews       Review[]
+}
+
+// ─── SESSION ─────────────────────────────────────────────────────────────────
+// Server-side session for customer auth.
+// token = crypto.randomBytes(32).toString("hex") stored in an httpOnly cookie.
+// Swap for NextAuth / Auth.js adapter tables if you adopt that later.
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─── ADDRESS ─────────────────────────────────────────────────────────────────
+// Saved delivery addresses on a customer account.
+// A snapshot of the chosen address is stored on the Order at checkout time,
+// so that the order record stays accurate even if the address is later edited.
+
+model Address {
+  id         String   @id @default(uuid())
+  userId     String
+  label      String? // "Home" | "Work" — shown in the address picker
+  firstName  String
+  lastName   String
+  company    String?
+  line1      String
+  line2      String?
+  city       String
+  province   String // "GP" | "WC" | "KZN" | "EC" | etc.
+  postalCode String
+  country    String   @default("ZA")
+  phone      String?
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
+}
+
+// ─── CART ITEM ────────────────────────────────────────────────────────────────
+// Persisted cart rows — survive browser refresh and tab close.
+//
+// Logged-in user:  userId set,     sessionId null
+// Guest:           userId null,    sessionId set (cookie: "bb_session")
+//
+// On login → merge guest cart: add quantities for matching variantId,
+// create new rows for variants the user didn't already have.
+//
+// productId is denormalised here to make "fetch cart with product images"
+// a single JOIN rather than two.
+
+model CartItem {
+  id        String   @id @default(uuid())
+  userId    String?
+  sessionId String?
+  productId String // denormalised — variant's parent product
+  variantId String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  // One row per variant per user/session (quantity field absorbs "add again")
+  @@unique([userId, variantId])
+  @@unique([sessionId, variantId])
+}
+
+// ─── ORDER ────────────────────────────────────────────────────────────────────
+// status:        pending → confirmed → processing → shipped → delivered
+//                         (or any stage) → cancelled | refunded
+// paymentStatus: unpaid → paid → refunded
+//
+// Shipping address is stored as a FK to Address (snapshot at time of order
+// creation via the addressSnapshot fields on OrderItem is not needed here —
+// we soft-delete addresses instead, or copy fields if you prefer).
+
+model Order {
+  id          String @id @default(uuid())
+  orderNumber String @unique // "BB-2026-00001" — generated in app code
+
+  userId String
+
+  // Pricing snapshot (Rand cents)
+  subtotalInCents Int
+  shippingInCents Int @default(0)
+  discountInCents Int @default(0)
+  totalInCents    Int
+
+  // Status
+  status        String  @default("pending")
+  paymentStatus String  @default("unpaid")
+  paymentMethod String? // "stripe_card" | "eft"
+
+  // Stripe
+  stripePaymentIntentId String?
+
+  // Shipping
+  shippingAddressId String?
+  shippingMethod    String? // "Dawn Wing Economy" | "FedEx Express"
+  trackingNumber    String?
+  trackingUrl       String?
+
+  // Discount
+  couponId   String?
+  couponCode String? // snapshot so the order survives coupon deletion
+
+  // Notes
+  customerNote String?
+  adminNote    String?
+
+  // Timestamps
+  shippedAt   DateTime?
+  deliveredAt DateTime?
+  cancelledAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user            User        @relation(fields: [userId], references: [id])
+  shippingAddress Address?    @relation(fields: [shippingAddressId], references: [id])
+  coupon          Coupon?     @relation(fields: [couponId], references: [id])
+  items           OrderItem[]
+}
+
+// ─── ORDER ITEM ───────────────────────────────────────────────────────────────
+// Snapshot of the variant at purchase time (name, SKU, size, colour, price).
+// This means renaming a product or deleting a variant never corrupts the order.
+
+model OrderItem {
+  id        String @id @default(uuid())
+  orderId   String
+  productId String
+  variantId String
+
+  // Snapshots — written at checkout, never updated afterwards
+  productName String
+  variantSku  String
+  size        String?
+  color       String?
+
+  quantity         Int
+  unitPriceInCents Int // price per unit at time of purchase
+  totalInCents     Int // quantity × unitPriceInCents
+
+  createdAt DateTime @default(now())
+
+  order   Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product        @relation(fields: [productId], references: [id], onDelete: Restrict)
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+}
+
+// ─── WISHLIST ITEM ────────────────────────────────────────────────────────────
+// One row per product per user (not per variant — we save the shoe, not the size).
+// Size gets chosen at the point of adding to cart from the wishlist page.
+
+model WishlistItem {
+  id        String   @id @default(uuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+// ─── REVIEW ──────────────────────────────────────────────────────────────────
+// Held for admin approval before appearing on the storefront.
+// One review per user per product.
+
+model Review {
+  id         String   @id @default(uuid())
+  productId  String
+  userId     String
+  rating     Int // 1–5
+  title      String?
+  body       String?
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+// ─── COUPON ──────────────────────────────────────────────────────────────────
+// type: "percentage" (value = 0–100) | "fixed" (value in Rand cents)
+// maxUsesTotal null = unlimited. maxUsesPerUser defaults to 1.
+
+model Coupon {
+  id              String    @id @default(uuid())
+  code            String    @unique
+  description     String?
+  type            String // "percentage" | "fixed"
+  value           Int // percent 0–100, or Rand cents
+  minOrderInCents Int?
+  maxUsesTotal    Int?
+  maxUsesPerUser  Int       @default(1)
+  usedCount       Int       @default(0)
+  isActive        Boolean   @default(true)
+  expiresAt       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  orders Order[]
+}
+
+// ─── SHIPPING ZONE & RATE ────────────────────────────────────────────────────
+// Zones map SA provinces to one or more courier rates (economy, express).
+// provinces is a comma-separated list of province codes, e.g. "GP,NW,MP".
+//
+// SA provinces: GP WC KZN EC MP LP NW FS NC
+
+model ShippingZone {
+  id        String   @id @default(uuid())
+  name      String // "Gauteng" | "Cape Town Metro" | "Rest of SA"
+  provinces String // "GP" | "WC,NC" | "EC,KZN,MP,LP,NW,FS"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rates ShippingRate[]
+}
+
+model ShippingRate {
+  id            String   @id @default(uuid())
+  zoneId        String
+  name          String // "Economy (3–5 days)" | "Express (1–2 days)"
+  courier       String? // "dawn_wing" | "fastway" | "fedex"
+  priceInCents  Int
+  freeThreshold Int? // free shipping when order subtotal exceeds this
+  estimatedDays String? // "3–5 days"
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  zone ShippingZone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+}

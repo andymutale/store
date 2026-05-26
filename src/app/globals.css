@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #2B7BB9;
+  --color-brand-blue-dark: #1A5C8F;
+  --color-brand-blue-light: #EAF4FC;
+  --color-brand-blue-mid: #3A9AD9;
+  --color-brand-red: #E82C2C;
+  --color-brand-gold: #F5A623;
+  --color-brand-green: #27AE60;
+  
+  --color-white: #FFFFFF;
+  --color-off-white: #F4F6F8;
+  --color-light-grey: #E8ECF0;
+  --color-border-color: #D0D7E0;
+  
+  --color-text-primary: #1A2332;
+  --color-text-secondary: #4A5568;
+  --color-text-muted: #8A95A3;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BRAND TOKENS  (Brian Bands Sports colour system)
+   Change these to re-skin the entire store in one place.
+   ───────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --brand-blue:       #2B7BB9;
+    --brand-blue-dark:  #1A5C8F;
+    --brand-blue-light: #EAF4FC;
+    --brand-blue-mid:   #3A9AD9;
+    --brand-red:        #E82C2C;
+    --brand-gold:       #F5A623;
+    --brand-green:      #27AE60;
+
+
+    --white:            #FFFFFF;
+    --off-white:        #F4F6F8;
+    --light-grey:       #E8ECF0;
+    --border-color:     #D0D7E0;
+
+
+    --text-primary:     #1A2332;
+    --text-secondary:   #4A5568;
+    --text-muted:       #8A95A3;
+
+
+    /* shadcn/ui tokens mapped to brand */
+    --background:               0 0% 96%;
+    --foreground:               215 28% 17%;
+    --card:                     0 0% 100%;
+    --card-foreground:          215 28% 17%;
+    --popover:                  0 0% 100%;
+    --popover-foreground:       215 28% 17%;
+    --primary:                  208 61% 45%;
+    --primary-foreground:       0 0% 100%;
+    --secondary:                210 25% 95%;
+    --secondary-foreground:     215 28% 17%;
+    --muted:                    210 20% 92%;
+    --muted-foreground:         215 14% 55%;
+    --accent:                   38 96% 55%;
+    --accent-foreground:        0 0% 100%;
+    --destructive:              0 79% 55%;
+    --destructive-foreground:   0 0% 100%;
+    --border:                   214 22% 82%;
+    --input:                    214 22% 82%;
+    --ring:                     208 61% 45%;
+    --radius:                   0.375rem;
+  }
+}
+
+
+@layer base {
+  * { border-color: var(--border-color); }
+  body {
+    background-color: var(--off-white);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+}
+
+
+@layer utilities {
+  /* Marquee ticker */
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .animate-scroll { animation: scroll 30s linear infinite; }
+
+
+  /* Card lift */
+  .card-hover { transition: transform 200ms ease, box-shadow 200ms ease; }
+  .card-hover:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+
+  /* Button press */
+  .button-hover { transition: all 150ms ease; }
+  .button-hover:hover { transform: scale(1.02); }
+
+
+  /* Colour helpers */
+  .text-brand-blue      { color: var(--brand-blue); }
+  .text-brand-blue-dark { color: var(--brand-blue-dark); }
+  .text-brand-gold      { color: var(--brand-gold); }
+  .text-brand-red       { color: var(--brand-red); }
+  .text-brand-green     { color: var(--brand-green); }
+  .text-text-primary    { color: var(--text-primary); }
+  .text-text-secondary  { color: var(--text-secondary); }
+  .text-text-muted      { color: var(--text-muted); }
+
+
+  .bg-brand-blue        { background-color: var(--brand-blue); }
+  .bg-brand-blue-dark   { background-color: var(--brand-blue-dark); }
+  .bg-brand-blue-light  { background-color: var(--brand-blue-light); }
+  .bg-brand-red         { background-color: var(--brand-red); }
+  .bg-light-grey        { background-color: var(--light-grey); }
+  .bg-off-white         { background-color: var(--off-white); }
+  .bg-text-primary      { background-color: var(--text-primary); }
+
+
+  .border-brand         { border-color: var(--border-color); }
+}
+
+
+/* ── Reusable form input base ─────────────────────────────── */
+@layer components {
+  .input-base {
+    @apply w-full px-3 py-2 border border-border-color rounded-sm text-sm text-text-primary bg-white placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-blue transition-shadow;
+  }
+}
+/* ── Marquee ticker (homepage) ─────────────────────── */
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
