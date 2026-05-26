@@ -87,6 +87,9 @@ export async function POST(req: NextRequest) {
       text: `Thanks for your purchase! Order: ${order.orderNumber}`
     })
   }
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+   return new NextResponse("Demo mode: Webhook skipped", { status: 200 });
+  }
 
   return new NextResponse(null, { status: 200 })
 }
