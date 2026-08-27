@@ -26,8 +26,8 @@ export default async function ProfilePage() {
         </p>
         <p className="text-xs text-text-muted mt-1.5">
           To change your email address, contact us at{" "}
-          <a href="mailto:admin@brianbands.co.za" className="text-brand-blue hover:underline">
-            admin@brianbands.co.za
+          <a href="mailto:admin@example.com" className="text-brand-blue hover:underline">
+            admin@example.com
           </a>.
         </p>
       </section>

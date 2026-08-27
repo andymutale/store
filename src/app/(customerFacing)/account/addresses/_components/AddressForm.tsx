@@ -57,7 +57,7 @@ export function AddressForm({
 
       <div className="grid grid-cols-2 gap-3">
         <Field label="City" error={e.city}>
-          <input name="city" required defaultValue={address?.city} placeholder="Gqeberha" className="input-base" />
+          <input name="city" required defaultValue={address?.city} placeholder="Cape Town" className="input-base" />
         </Field>
         <Field label="Province" error={e.province}>
           <select name="province" required defaultValue={address?.province ?? ""} className="input-base">

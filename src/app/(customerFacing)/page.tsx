@@ -67,7 +67,7 @@ export default function HomePage() {
                 Run Faster.<br />Play Harder.
               </h2>
               <p className="text-white/70 text-sm mb-5 max-w-xs">
-                Adidas, Nike, New Balance &amp; more — in-store and online from Gqeberha.
+                Adidas, Nike, New Balance &amp; more — in-store and online.
               </p>
               <Link href="/products"
                 className="inline-flex items-center bg-brand-blue text-white font-bold px-5 gap-2 rounded-sm button-hover hover:bg-brand-blue-dark transition-colors"
@@ -77,7 +77,7 @@ export default function HomePage() {
             </div>
             <div className="absolute bottom-5 right-5 border-2 border-brand-gold text-brand-gold rounded-full flex items-center justify-center text-center font-bold"
               style={{ width: 52, height: 52, fontSize: 9 }}>
-              Est.<br />1958
+              Trusted<br />Since Day 1
             </div>
           </div>
 
@@ -109,15 +109,15 @@ export default function HomePage() {
               "🚚 Free delivery on orders over R800",
               "👟 Adidas · Nike · New Balance · Wilson · Gryphon",
               "✓ Authorised dealer for all brands",
-              "📍 In-store fitting advice — Gqeberha",
+              "📍 In-store fitting advice",
               "↩ 30-day returns on unworn items",
-              "🏆 Trusted since 1958",
+              "🏆 Trusted by athletes",
               "🚚 Free delivery on orders over R800",
               "👟 Adidas · Nike · New Balance · Wilson · Gryphon",
               "✓ Authorised dealer for all brands",
-              "📍 In-store fitting advice — Gqeberha",
+              "📍 In-store fitting advice",
               "↩ 30-day returns on unworn items",
-              "🏆 Trusted since 1958",
+              "🏆 Trusted by athletes",
             ].map((item, i) => <span key={i}>{item} &nbsp;·</span>)}
           </div>
         </div>
@@ -170,7 +170,7 @@ export default function HomePage() {
             { icon: <Truck className="w-7 h-7 text-brand-blue" />,     label: "Nationwide delivery",    sub: "3–5 business days" },
             { icon: <RotateCcw className="w-7 h-7 text-brand-blue" />, label: "30-day returns",         sub: "Unworn items accepted" },
             { icon: <ShieldCheck className="w-7 h-7 text-brand-blue" />, label: "Authorised dealer",   sub: "All major brands" },
-            { icon: <Star className="w-7 h-7 text-brand-blue" />,       label: "Est. 1958",            sub: "67 years of expertise" },
+            { icon: <Star className="w-7 h-7 text-brand-blue" />,       label: "Expert advice",       sub: "From real athletes" },
           ].map((item, i) => (
             <div key={i} className="flex flex-col items-center text-center gap-2">
               {item.icon}
@@ -189,8 +189,8 @@ export default function HomePage() {
               Good Price &amp; Good Advice
             </h2>
             <p className="text-text-secondary text-sm leading-relaxed max-w-md">
-              Gqeberha&rsquo;s specialist sports store since 1958. Expert fitting advice, authorised dealer
-              stock, and nationwide delivery from the Eastern Cape.
+              Your specialist sports store. Expert fitting advice, authorised dealer
+              stock, and nationwide delivery.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0 w-full sm:w-auto">

@@ -38,7 +38,7 @@ const VALID_ADDRESS = {
   phone:          "0821234567",
   line1:          "12 Main Road",
   line2:          "",
-  city:           "Gqeberha",
+  city:           "Cape Town",
   province:       "EC",
   postalCode:     "6001",
   shippingRateId: "",  // set after seeding

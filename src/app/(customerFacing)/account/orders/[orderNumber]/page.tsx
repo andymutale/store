@@ -136,10 +136,10 @@ export default async function OrderDetailPage({ params }: Props) {
       {/* Help */}
       <p className="text-xs text-text-muted text-center">
         Questions about this order?{" "}
-        <a href="mailto:admin@brianbands.co.za" className="text-brand-blue hover:underline">
+        <a href="mailto:admin@example.com" className="text-brand-blue hover:underline">
           Contact us
         </a>
-        {" "}or call 041 363 5499.
+        {" "}or call 000 000 0000.
       </p>
     </div>
   )

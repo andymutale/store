@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-blue: #2B7BB9;
-  --color-brand-blue-dark: #1A5C8F;
-  --color-brand-blue-light: #EAF4FC;
-  --color-brand-blue-mid: #3A9AD9;
-  --color-brand-red: #E82C2C;
-  --color-brand-gold: #F5A623;
+  --color-brand-blue: #FF4747;
+  --color-brand-blue-dark: #D63333;
+  --color-brand-blue-light: #FFE8E8;
+  --color-brand-blue-mid: #FF6B6B;
+  --color-brand-red: #E4572E;
+  --color-brand-gold: #F7E998;
   --color-brand-green: #27AE60;
   
   --color-white: #FFFFFF;
@@ -20,17 +20,17 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
-   BRAND TOKENS  (Brian Bands Sports colour system)
+   BRAND TOKENS  (Saint Laurens Sporting Goods colour system)
    Change these to re-skin the entire store in one place.
    ───────────────────────────────────────────────────────────── */
 @layer base {
   :root {
-    --brand-blue:       #2B7BB9;
-    --brand-blue-dark:  #1A5C8F;
-    --brand-blue-light: #EAF4FC;
-    --brand-blue-mid:   #3A9AD9;
-    --brand-red:        #E82C2C;
-    --brand-gold:       #F5A623;
+    --brand-blue:       #FF4747;
+    --brand-blue-dark:  #D63333;
+    --brand-blue-light: #FFE8E8;
+    --brand-blue-mid:   #FF6B6B;
+    --brand-red:        #E4572E;
+    --brand-gold:       #F7E998;
     --brand-green:      #27AE60;
 
 
@@ -52,19 +52,19 @@
     --card-foreground:          215 28% 17%;
     --popover:                  0 0% 100%;
     --popover-foreground:       215 28% 17%;
-    --primary:                  208 61% 45%;
+    --primary:                  0 100% 64%;
     --primary-foreground:       0 0% 100%;
     --secondary:                210 25% 95%;
     --secondary-foreground:     215 28% 17%;
     --muted:                    210 20% 92%;
     --muted-foreground:         215 14% 55%;
-    --accent:                   38 96% 55%;
-    --accent-foreground:        0 0% 100%;
-    --destructive:              0 79% 55%;
+    --accent:                   51 86% 78%;
+    --accent-foreground:        215 28% 17%;
+    --destructive:              14 77% 54%;
     --destructive-foreground:   0 0% 100%;
     --border:                   214 22% 82%;
     --input:                    214 22% 82%;
-    --ring:                     208 61% 45%;
+    --ring:                     0 100% 64%;
     --radius:                   0.375rem;
   }
 }

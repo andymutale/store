@@ -18,7 +18,7 @@ export default async function LoginPage({ searchParams }: Props) {
 
         <div className="text-center mb-8">
           <h1 className="font-extrabold text-text-primary text-2xl mb-1">Sign in</h1>
-          <p className="text-text-muted text-sm">Welcome back to Brian Bands</p>
+          <p className="text-text-muted text-sm">Welcome back to Saint Laurens Sporting Goods</p>
         </div>
 
         <div className="bg-white border border-border-color rounded-md p-6 shadow-sm">

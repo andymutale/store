@@ -9,10 +9,10 @@ export default function ContactPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
         {[
-          { label: "Phone",    value: "041 363 5499",            href: "tel:+27413635499",             icon: "📞" },
-          { label: "Email",    value: "admin@brianbands.co.za",  href: "mailto:admin@brianbands.co.za", icon: "✉️" },
+          { label: "Phone",    value: "000 000 0000",            href: "tel:+10000000000",             icon: "📞" },
+          { label: "Email",    value: "admin@example.com",  href: "mailto:admin@example.com", icon: "✉️" },
           { label: "Hours",    value: "Mon–Fri 8am–5pm · Sat 8am–1pm", href: null, icon: "🕐" },
-          { label: "Location", value: "Gqeberha, Eastern Cape, South Africa", href: null, icon: "📍" },
+          { label: "Location", value: "Your City, Your Country", href: null, icon: "📍" },
         ].map(item => (
           <div key={item.label} className="bg-white border border-border-color rounded-md p-5 flex gap-4">
             <span className="text-2xl">{item.icon}</span>
@@ -28,7 +28,7 @@ export default function ContactPage() {
 
       <div className="bg-white border border-border-color rounded-md p-6">
         <h2 className="font-bold text-text-primary mb-4">Send us a message</h2>
-        <form className="space-y-4" action="mailto:admin@brianbands.co.za" method="GET">
+        <form className="space-y-4" action="mailto:admin@example.com" method="GET">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
               <label className="text-sm font-semibold text-text-primary">First name</label>

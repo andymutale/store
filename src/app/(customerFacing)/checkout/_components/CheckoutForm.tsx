@@ -180,7 +180,7 @@ export function CheckoutForm({ cartLines, subtotalInCents, shippingZones }: Prop
               </Field>
               <div className="grid grid-cols-2 gap-3">
                 <Field label="City" error={errors.city}>
-                  <input name="city" required className="input-base" placeholder="Gqeberha" />
+                  <input name="city" required className="input-base" placeholder="Cape Town" />
                 </Field>
                 <Field label="Province" error={errors.province}>
                   <select name="province" required className="input-base"
@@ -280,10 +280,10 @@ export function CheckoutForm({ cartLines, subtotalInCents, shippingZones }: Prop
                 appearance: {
                   theme: "stripe",
                   variables: {
-                    colorPrimary:     "#2B7BB9",
+                    colorPrimary:     "#FF4747",
                     colorBackground:  "#ffffff",
                     colorText:        "#1A2332",
-                    colorDanger:      "#E82C2C",
+                    colorDanger:      "#E4572E",
                     borderRadius:     "2px",
                     fontFamily:       "Inter, system-ui, sans-serif",
                   },
@@ -406,7 +406,7 @@ function PaymentStep({ orderNumber, totalInCents }: { orderNumber: string; total
       </button>
 
       <p className="text-xs text-text-muted text-center flex items-center justify-center gap-1.5">
-        <Lock className="w-3 h-3" /> Secured by Stripe. Your card details are never stored by Brian Bands.
+        <Lock className="w-3 h-3" /> Secured by Stripe. Your card details are never stored by Saint Laurens Sporting Goods.
       </p>
     </form>
   )

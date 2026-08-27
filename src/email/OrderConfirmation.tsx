@@ -63,18 +63,18 @@ export default function OrderConfirmationEmail({
 
   return (
     <Html>
-      <Preview>Your Brian Bands order {orderNumber} is confirmed 🎉</Preview>
+      <Preview>Your Saint Laurens Sporting Goods order {orderNumber} is confirmed 🎉</Preview>
       <Tailwind>
         <Head />
         <Body className="bg-gray-100 font-sans">
           <Container className="max-w-xl mx-auto bg-white rounded-lg my-8 overflow-hidden shadow-sm">
 
             {/* Brand header */}
-            <Section className="bg-[#2B7BB9] px-6 py-5">
+            <Section className="bg-[#FF4747] px-6 py-5">
               <Text className="text-white font-extrabold text-lg tracking-widest m-0 uppercase">
-                Brian Bands Sports
+                Saint Laurens Sporting Goods
               </Text>
-              <Text className="text-white/70 text-xs m-0 italic">Gqeberha · est. 1958</Text>
+              <Text className="text-white/70 text-xs m-0 italic">Sporting Goods</Text>
             </Section>
 
             {/* Main content */}
@@ -163,21 +163,21 @@ export default function OrderConfirmationEmail({
               {/* CTA */}
               <Section className="text-center mt-4">
                 <Button href={orderUrl}
-                  className="bg-[#2B7BB9] text-white font-bold px-6 py-3 rounded text-sm no-underline">
+                  className="bg-[#FF4747] text-white font-bold px-6 py-3 rounded text-sm no-underline">
                   View Order
                 </Button>
               </Section>
 
               <Text className="text-gray-400 text-xs text-center mt-4">
                 Questions? Reply to this email or call{" "}
-                <a href="tel:+27413635499" style={{ color: "#2B7BB9" }}>041 363 5499</a>
+                <a href="tel:+10000000000" style={{ color: "#FF4747" }}>000 000 0000</a>
               </Text>
             </Section>
 
             {/* Footer */}
             <Section className="bg-gray-50 px-6 py-4 border-t border-gray-200">
               <Text className="text-gray-400 text-xs text-center m-0">
-                Brian Bands Sports · Gqeberha, South Africa<br />
+                Saint Laurens Sporting Goods<br />
                 You're receiving this because you placed an order with us.
               </Text>
             </Section>

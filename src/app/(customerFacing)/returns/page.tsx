@@ -21,7 +21,7 @@ export default function ReturnsPage() {
           },
           {
             title: "How to return",
-            body: "Contact us at admin@brianbands.co.za or call 041 363 5499 with your order number. We will provide a return address and instructions. You are responsible for return shipping costs unless the item was faulty or incorrectly sent.",
+            body: "Contact us at admin@example.com or call 000 000 0000 with your order number. We will provide a return address and instructions. You are responsible for return shipping costs unless the item was faulty or incorrectly sent.",
           },
           {
             title: "Faulty or incorrect items",
@@ -45,7 +45,7 @@ export default function ReturnsPage() {
         <div className="text-sm text-text-muted">
           Need help with a return?{" "}
           <Link href="/contact" className="text-brand-blue hover:underline">Contact us</Link> or call{" "}
-          <a href="tel:+27413635499" className="text-brand-blue hover:underline">041 363 5499</a>.
+          <a href="tel:+10000000000" className="text-brand-blue hover:underline">000 000 0000</a>.
         </div>
       </div>
     </div>

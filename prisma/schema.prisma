@@ -1,4 +1,4 @@
-// ─── PRISMA SCHEMA — Brian Bands Sportswear ──────────────────────────────────
+// ─── PRISMA SCHEMA — Saint Laurens Sporting Goods ─────────────────────────────
 // SQLite for development. Switching to PostgreSQL for production:
 //   1. Change provider to "postgresql"
 //   2. Update DATABASE_URL to a postgres:// connection string

@@ -108,7 +108,7 @@ describe("changePassword", () => {
 
 const VALID_ADDR = {
   firstName: "Thabo", lastName: "Nkosi",
-  line1: "12 Main Road", city: "Gqeberha",
+  line1: "12 Main Road", city: "Cape Town",
   province: "EC", postalCode: "6001",
 }
 
@@ -117,7 +117,7 @@ describe("addAddress", () => {
     await addAddress({}, formData(VALID_ADDR)).catch(() => {})  // may redirect
     const addr = await testDb.address.findFirst({ where: { userId } })
     expect(addr).not.toBeNull()
-    expect(addr!.city).toBe("Gqeberha")
+    expect(addr!.city).toBe("Cape Town")
   })
 
   it("sets first address as default automatically", async () => {

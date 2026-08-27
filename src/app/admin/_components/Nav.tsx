@@ -11,7 +11,7 @@ export function Nav({ children }: { children: ReactNode }) {
     <nav className="w-full bg-brand-blue text-white flex px-4 sticky top-0 z-40">
       <div className="flex items-center gap-0 max-w-content w-full mx-auto">
         <span className="font-extrabold uppercase tracking-widest mr-auto py-4 text-xs">
-          BRIAN BANDS · Admin
+          SAINT LAURENS · Admin
         </span>
         {children}
       </div>

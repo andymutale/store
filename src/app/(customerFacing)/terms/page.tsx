@@ -14,7 +14,7 @@ export default function TermsPage() {
           { title: "Warranty", body: "Products are covered by the manufacturer's warranty where applicable. Warranty claims must be directed to us and we will liaise with the brand on your behalf." },
           { title: "Limitation of liability", body: "Our liability to you is limited to the price paid for the product. We are not liable for indirect or consequential losses." },
           { title: "Governing law", body: "These terms are governed by the laws of South Africa. Any disputes shall be subject to the jurisdiction of the South African courts." },
-          { title: "Contact", body: "Questions about these terms? Email admin@brianbands.co.za or call 041 363 5499." },
+          { title: "Contact", body: "Questions about these terms? Email admin@example.com or call 000 000 0000." },
         ].map(s => (
           <div key={s.title} className="bg-white border border-border-color rounded-md p-5">
             <h2 className="font-bold text-text-primary mb-2">{s.title}</h2>

@@ -1,4 +1,4 @@
-// prisma/seed.js — Brian Bands Sportswear
+// prisma/seed.js — Saint Laurens Sporting Goods
 // Populates categories, brands, and all products with per-size stock.
 //
 // Run:                node prisma/seed.js
@@ -542,7 +542,7 @@ const shippingZones = [
 // ─── MAIN ────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log("🌱  Seeding Brian Bands...\n");
+  console.log("🌱  Seeding Saint Laurens Sporting Goods...\n");
 
   // ── Wipe existing data (in safe dependency order) ──────────────────────────
   await db.orderItem.deleteMany({});
@@ -627,7 +627,7 @@ async function main() {
   await db.coupon.createMany({
     data: [
       { code: "WELCOME10",  type: "percentage", value: 10, description: "10% off your first order", maxUsesPerUser: 1, isActive: true },
-      { code: "BRIANBANDS", type: "fixed",       value: 5000, description: "R50 off any order", minOrderInCents: 50000, isActive: true },
+      { code: "SAINTLAURENS", type: "fixed",     value: 5000, description: "R50 off any order", minOrderInCents: 50000, isActive: true },
     ],
   });
   console.log("✅  2 sample coupons\n");

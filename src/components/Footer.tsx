@@ -10,11 +10,11 @@ export function Footer() {
           <div className="max-w-[320px]">
             <div className="flex items-center gap-3 text-[30px] leading-none tracking-tight">
               <span className="font-bold text-[28px] translate-y-[-1px]">↑</span>
-              <span className="font-normal">Brian Bands</span>
+              <span className="font-normal">Saint Laurens</span>
             </div>
 
             <p className="mt-5 text-[14px] leading-snug text-black">
-              © {new Date().getFullYear()} Brian Bands, Inc.
+              © {new Date().getFullYear()} Saint Laurens Sporting Goods, Inc.
               <br />
               All rights reserved.
             </p>

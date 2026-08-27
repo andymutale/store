@@ -69,7 +69,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
   // 4. Send confirmation email via Resend
   try {
     await resend.emails.send({
-      from:    "Brian Bands <orders@brianbands.co.za>",
+      from:    "Saint Laurens Sporting Goods <orders@example.com>",
       to:      order.user.email,
       subject: `Order confirmed — ${order.orderNumber}`,
       react:   OrderConfirmationEmail({

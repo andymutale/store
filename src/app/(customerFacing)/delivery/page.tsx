@@ -54,7 +54,7 @@ export default function DeliveryPage() {
         </section>
 
         <div className="text-sm text-text-muted">
-          Questions about your delivery? <Link href="/contact" className="text-brand-blue hover:underline">Contact us</Link> or call <a href="tel:+27413635499" className="text-brand-blue hover:underline">041 363 5499</a>.
+          Questions about your delivery? <Link href="/contact" className="text-brand-blue hover:underline">Contact us</Link> or call <a href="tel:+10000000000" className="text-brand-blue hover:underline">000 000 0000</a>.
         </div>
       </div>
     </div>

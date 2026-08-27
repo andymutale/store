@@ -29,7 +29,7 @@ async function fillAddressForm(page: Page, province = "EC") {
   await page.getByLabel("Email address").fill(`e2e-checkout-${Date.now()}@example.com`)
   await page.getByLabel("Phone number").fill("0821234567")
   await page.getByLabel("Street address").fill("12 Main Road")
-  await page.getByLabel("City").fill("Gqeberha")
+  await page.getByLabel("City").fill("Cape Town")
   await page.getByLabel("Province").selectOption(province)
   await page.getByLabel("Postal code").fill("6001")
 }

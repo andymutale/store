@@ -159,7 +159,7 @@ export async function createOrder(formData: FormData): Promise<CreateOrderResult
       customerEmail: data.email,
     },
     receipt_email: data.email,
-    description:   `Brian Bands order ${orderNumber}`,
+    description:   `Saint Laurens Sporting Goods order ${orderNumber}`,
   })
 
   if (!paymentIntent.client_secret) {

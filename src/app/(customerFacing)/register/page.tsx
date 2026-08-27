@@ -14,7 +14,7 @@ export default async function RegisterPage() {
 
         <div className="text-center mb-8">
           <h1 className="font-extrabold text-text-primary text-2xl mb-1">Create account</h1>
-          <p className="text-text-muted text-sm">Join Brian Bands — track orders, save addresses</p>
+          <p className="text-text-muted text-sm">Join Saint Laurens Sporting Goods — track orders, save addresses</p>
         </div>
 
         <div className="bg-white border border-border-color rounded-md p-6 shadow-sm">

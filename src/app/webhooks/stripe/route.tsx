@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: `Support <${process.env.SENDER_EMAIL}>`,
       to: email,
-      subject: "Your Purchase — Brian Bands Sports",
+      subject: "Your Purchase — Saint Laurens Sporting Goods",
       text: `Thanks for your purchase! Order: ${order.orderNumber}`
     })
   }

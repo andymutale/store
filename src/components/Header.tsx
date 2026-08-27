@@ -29,9 +29,9 @@ function TopUtilityBar({ user }: Props) {
     <div className="w-full bg-brand-blue-dark text-white hidden md:block" style={{ height: 32 }}>
       <div className="max-w-content mx-auto flex justify-between items-center h-full px-6 text-xs">
         <div className="flex gap-5" style={{ opacity: 0.75 }}>
-          <span>📍 Gqeberha, South Africa</span>
-          <span>☎ 041 363 5499</span>
-          <span className="hidden lg:inline">admin@brianbands.co.za</span>
+          <span>📍 Your City, Your Country</span>
+          <span>☎ 000 000 0000</span>
+          <span className="hidden lg:inline">admin@example.com</span>
         </div>
 
         <div className="flex gap-5 items-center" style={{ opacity: 0.85 }}>
@@ -85,10 +85,10 @@ function MainHeader({ user, cartBadge }: Props) {
           <Link href="/" className="flex-shrink-0">
             <div className="font-extrabold uppercase tracking-widest leading-none"
               style={{ fontSize: "clamp(14px,4vw,22px)" }}>
-              BRIAN BANDS
+              SAINT LAURENS
             </div>
             <div className="italic text-brand-gold" style={{ fontSize: 11, opacity: 0.9 }}>
-              sports · est. 1958
+              sporting goods
             </div>
           </Link>
 
@@ -211,7 +211,7 @@ function CategoryNav() {
           </Link>
         ))}
         <div className="ml-auto italic text-white/40" style={{ fontSize: 11 }}>
-          Est. 1958 · Gqeberha
+          Sporting Goods
         </div>
       </div>
     </div>

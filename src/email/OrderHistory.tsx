@@ -32,8 +32,8 @@ export default function OrderHistoryEmail({ orders }: { orders: Order[] }) {
           <Container className="max-w-xl mx-auto bg-white rounded-lg my-8 overflow-hidden">
 
             {/* Header bar */}
-            <Section className="bg-[#2B7BB9] px-6 py-5">
-              <Text className="text-white font-extrabold text-lg tracking-widest m-0">BRIAN BANDS SPORTS</Text>
+            <Section className="bg-[#FF4747] px-6 py-5">
+              <Text className="text-white font-extrabold text-lg tracking-widest m-0">SAINT LAURENS SPORTING GOODS</Text>
               <Text className="text-white/70 text-xs m-0">Order History</Text>
             </Section>
 
@@ -74,7 +74,7 @@ export default function OrderHistoryEmail({ orders }: { orders: Order[] }) {
                         <Column align="right" className="pl-4">
                           <Button
                             href={`${process.env.NEXT_PUBLIC_SERVER_URL}/products/${order.product.id}/download/${order.downloadVerificationId}`}
-                            className="bg-[#2B7BB9] text-white font-bold px-4 py-2 rounded text-xs no-underline">
+                            className="bg-[#FF4747] text-white font-bold px-4 py-2 rounded text-xs no-underline">
                             Download
                           </Button>
                         </Column>
@@ -87,7 +87,7 @@ export default function OrderHistoryEmail({ orders }: { orders: Order[] }) {
               ))}
 
               <Text className="text-gray-400 text-xs text-center mt-4">
-                Need help? Reply to this email or call 041 363 5499 · Gqeberha, South Africa
+                Need help? Reply to this email or call 000 000 0000
               </Text>
             </Section>
 
