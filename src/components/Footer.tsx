@@ -21,16 +21,28 @@ export function Footer() {
           </div>
 
           {/* Links */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-10 gap-y-8 lg:pt-1">
+          <nav aria-label="Footer" className="grid grid-cols-2 sm:grid-cols-4 gap-x-10 gap-y-8 lg:pt-1">
             <div>
               <h3 className="text-[11px] uppercase tracking-[0.22em] mb-5">
-                Features
+                Shop
               </h3>
               <ul className="space-y-2.5 text-[14px] leading-snug">
-                <li><Link href="#" className="hover:opacity-70">Cross-Sell</Link></li>
-                <li><Link href="#" className="hover:opacity-70">Upsell</Link></li>
-                <li><Link href="#" className="hover:opacity-70">M&amp;A Expansion</Link></li>
-                <li><Link href="#" className="hover:opacity-70">Churn Detection</Link></li>
+                <li><Link href="/shop/cricket" className="hover:opacity-70">Cricket</Link></li>
+                <li><Link href="/shop/baseball" className="hover:opacity-70">Baseball</Link></li>
+                <li><Link href="/shop/tennis" className="hover:opacity-70">Tennis</Link></li>
+                <li><Link href="/shop/fitness" className="hover:opacity-70">Fitness</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-[11px] uppercase tracking-[0.22em] mb-5">
+                Support
+              </h3>
+              <ul className="space-y-2.5 text-[14px] leading-snug">
+                <li><Link href="/help" className="hover:opacity-70">Help Center</Link></li>
+                <li><Link href="/shipping" className="hover:opacity-70">Shipping & Returns</Link></li>
+                <li><Link href="/size-guide" className="hover:opacity-70">Size Guide</Link></li>
+                <li><Link href="/contact" className="hover:opacity-70">Contact Us</Link></li>
               </ul>
             </div>
 
@@ -39,31 +51,27 @@ export function Footer() {
                 Company
               </h3>
               <ul className="space-y-2.5 text-[14px] leading-snug">
-                <li><Link href="#" className="hover:opacity-70">About</Link></li>
-                <li><Link href="#" className="hover:opacity-70">How It Works</Link></li>
-                <li><Link href="#" className="hover:opacity-70">FAQ</Link></li>
-                <li><Link href="#" className="hover:opacity-70">Contact</Link></li>
+                <li><Link href="/about" className="hover:opacity-70">About Us</Link></li>
+                <li><Link href="/stores" className="hover:opacity-70">Store Locator</Link></li>
+                <li><Link href="/careers" className="hover:opacity-70">Careers</Link></li>
+                <li><Link href="/press" className="hover:opacity-70">Press</Link></li>
               </ul>
             </div>
 
             <div>
               <h3 className="text-[11px] uppercase tracking-[0.22em] mb-5">
-                Legal
+                Legal & Social
               </h3>
               <ul className="space-y-2.5 text-[14px] leading-snug">
-                <li><Link href="#" className="hover:opacity-70">MSA</Link></li>
-                <li><Link href="#" className="hover:opacity-70">Privacy Policy</Link></li>
-                <li><Link href="#" className="hover:opacity-70">Trust Center</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-[11px] uppercase tracking-[0.22em] mb-5">
-                Socials
-              </h3>
-              <ul className="space-y-2.5 text-[14px] leading-snug">
+                <li><Link href="/privacy" className="hover:opacity-70">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:opacity-70">Terms of Service</Link></li>
                 <li>
-                  <Link href="#" className="inline-flex items-center gap-2 hover:opacity-70">
+                  <Link
+                    href="https://linkedin.com/company/saint-laurens"
+                    className="inline-flex items-center gap-2 hover:opacity-70"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <span className="inline-flex h-4 w-4 items-center justify-center rounded-sm bg-black text-white text-[9px] leading-none font-bold">
                       in
                     </span>
@@ -72,24 +80,22 @@ export function Footer() {
                 </li>
               </ul>
             </div>
-          </div>
+          </nav>
         </div>
       </div>
 
-      {/* Illustration */}
       {/* Illustration layer */}
-<div className="pointer-events-none absolute inset-x-0 bottom-0 top-[110px] sm:top-[90px]">
-  <div className="absolute bottom-0 right-0 w-[125%] sm:w-[115%] md:w-[105%] lg:w-[98%] xl:w-[92%] h-[82%] sm:h-[88%] md:h-[92%] lg:h-[96%]">
-    <Image
-      src="/Gemini_Generated_Image_bk9068bk9068bk90.png"
-      alt="Cricket field watercolor backdrop illustration"
-      fill
-      priority
-      sizes="100vw"
-      className="object-contain object-bottom"
-    />
-  </div>
-
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[110px] sm:top-[90px]">
+        <div className="absolute bottom-0 right-0 w-[125%] sm:w-[115%] md:w-[105%] lg:w-[98%] xl:w-[92%] h-[82%] sm:h-[88%] md:h-[92%] lg:h-[96%]">
+          <Image
+            src="/Gemini_Generated_Image_bk9068bk9068bk90.png"
+            alt="Cricket field watercolor backdrop illustration"
+            fill
+            priority
+            sizes="100vw"
+            className="object-contain object-bottom"
+          />
+        </div>
       </div>
     </footer>
   )
