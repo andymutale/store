@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-blue: #FF4747;
-  --color-brand-blue-dark: #D63333;
-  --color-brand-blue-light: #FFE8E8;
-  --color-brand-blue-mid: #FF6B6B;
-  --color-brand-red: #E4572E;
-  --color-brand-gold: #F7E998;
-  --color-brand-green: #27AE60;
+  --color-brand-blue: #D97757;
+  --color-brand-blue-dark: #B85F42;
+  --color-brand-blue-light: #F5DFD3;
+  --color-brand-blue-mid: #E28F6E;
+  --color-brand-red: #C9508C;
+  --color-brand-gold: #E9FA5C;
+  --color-brand-green: #4B7360;
   
   --color-white: #FFFFFF;
-  --color-off-white: #F4F6F8;
-  --color-light-grey: #E8ECF0;
-  --color-border-color: #D0D7E0;
+  --color-off-white: #F3EFE4;
+  --color-light-grey: #E9E4D6;
+  --color-border-color: #D9D2C2;
   
-  --color-text-primary: #1A2332;
-  --color-text-secondary: #4A5568;
-  --color-text-muted: #8A95A3;
+  --color-text-primary: #121212;
+  --color-text-secondary: #4A4A44;
+  --color-text-muted: #8A8578;
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -25,46 +25,46 @@
    ───────────────────────────────────────────────────────────── */
 @layer base {
   :root {
-    --brand-blue:       #FF4747;
-    --brand-blue-dark:  #D63333;
-    --brand-blue-light: #FFE8E8;
-    --brand-blue-mid:   #FF6B6B;
-    --brand-red:        #E4572E;
-    --brand-gold:       #F7E998;
-    --brand-green:      #27AE60;
+    --brand-blue:       #D97757;
+    --brand-blue-dark:  #B85F42;
+    --brand-blue-light: #F5DFD3;
+    --brand-blue-mid:   #E28F6E;
+    --brand-red:        #C9508C;
+    --brand-gold:       #E9FA5C;
+    --brand-green:      #4B7360;
 
 
     --white:            #FFFFFF;
-    --off-white:        #F4F6F8;
-    --light-grey:       #E8ECF0;
-    --border-color:     #D0D7E0;
+    --off-white:        #F3EFE4;
+    --light-grey:       #E9E4D6;
+    --border-color:     #D9D2C2;
 
 
-    --text-primary:     #1A2332;
-    --text-secondary:   #4A5568;
-    --text-muted:       #8A95A3;
+    --text-primary:     #121212;
+    --text-secondary:   #4A4A44;
+    --text-muted:       #8A8578;
 
 
     /* shadcn/ui tokens mapped to brand */
-    --background:               0 0% 96%;
-    --foreground:               215 28% 17%;
+    --background:               44 35% 92%;
+    --foreground:               0 0% 9%;
     --card:                     0 0% 100%;
-    --card-foreground:          215 28% 17%;
+    --card-foreground:          0 0% 9%;
     --popover:                  0 0% 100%;
-    --popover-foreground:       215 28% 17%;
-    --primary:                  0 100% 64%;
+    --popover-foreground:       0 0% 9%;
+    --primary:                  16 62% 59%;
     --primary-foreground:       0 0% 100%;
-    --secondary:                210 25% 95%;
-    --secondary-foreground:     215 28% 17%;
-    --muted:                    210 20% 92%;
-    --muted-foreground:         215 14% 55%;
-    --accent:                   51 86% 78%;
-    --accent-foreground:        215 28% 17%;
+    --secondary:                44 20% 94%;
+    --secondary-foreground:     0 0% 9%;
+    --muted:                    44 15% 88%;
+    --muted-foreground:         30 4% 30%;
+    --accent:                   66 94% 67%;
+    --accent-foreground:        0 0% 9%;
     --destructive:              14 77% 54%;
     --destructive-foreground:   0 0% 100%;
-    --border:                   214 22% 82%;
-    --input:                    214 22% 82%;
-    --ring:                     0 100% 64%;
+    --border:                   42 23% 81%;
+    --input:                    42 23% 81%;
+    --ring:                     16 62% 59%;
     --radius:                   0.375rem;
   }
 }
