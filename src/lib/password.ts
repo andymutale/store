@@ -5,7 +5,13 @@ import {
 } from 'node:crypto'
 import { promisify } from 'node:util'
 
-const scrypt = promisify(nodeScrypt)
+type ScryptOptions = { N?: number; r?: number; p?: number; maxmem?: number }
+const scrypt = promisify(nodeScrypt) as (
+  password: string | Buffer,
+  salt: string | Buffer,
+  keylen: number,
+  options: ScryptOptions,
+) => Promise<Buffer>
 
 const VERSION = 'v1'
 const N = 32_768
@@ -30,12 +36,12 @@ export async function hashPassword(password: string): Promise<string> {
   }
 
   const salt = randomBytes(SALT_LENGTH)
-  const derived = (await scrypt(password, salt, KEY_LENGTH, {
+  const derived = await scrypt(password, salt, KEY_LENGTH, {
     N,
     r: R,
     p: P,
     maxmem: MAX_MEMORY,
-  })) as Buffer
+  })
 
   return `scrypt$${VERSION}$${N}$${R}$${P}$${salt.toString('hex')}$${derived.toString('hex')}`
 }
@@ -72,12 +78,12 @@ export async function verifyPassword(
   const expected = Buffer.from(hashHex, 'hex')
 
   try {
-    const derived = (await scrypt(password, salt, expected.length, {
+    const derived = await scrypt(password, salt, expected.length, {
       N: n,
       r,
       p,
       maxmem: MAX_MEMORY,
-    })) as Buffer
+    })
 
     return derived.length === expected.length && timingSafeEqual(derived, expected)
   } catch {
