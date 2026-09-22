@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #D97757;
+  --color-brand-blue-dark: #B85F42;
+  --color-brand-blue-light: #F5DFD3;
+  --color-brand-blue-mid: #E28F6E;
+  --color-brand-red: #C9508C;
+  --color-brand-gold: #E9FA5C;
+  --color-brand-green: #4B7360;
+  
+  --color-white: #FFFFFF;
+  --color-off-white: #F3EFE4;
+  --color-light-grey: #E9E4D6;
+  --color-border-color: #D9D2C2;
+  
+  --color-text-primary: #121212;
+  --color-text-secondary: #4A4A44;
+  --color-text-muted: #8A8578;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BRAND TOKENS  (Saint Laurens Sporting Goods colour system)
+   Change these to re-skin the entire store in one place.
+   ───────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --brand-blue:       #D97757;
+    --brand-blue-dark:  #B85F42;
+    --brand-blue-light: #F5DFD3;
+    --brand-blue-mid:   #E28F6E;
+    --brand-red:        #C9508C;
+    --brand-gold:       #E9FA5C;
+    --brand-green:      #4B7360;
+
+
+    --white:            #FFFFFF;
+    --off-white:        #F3EFE4;
+    --light-grey:       #E9E4D6;
+    --border-color:     #D9D2C2;
+
+
+    --text-primary:     #121212;
+    --text-secondary:   #4A4A44;
+    --text-muted:       #8A8578;
+
+
+    /* shadcn/ui tokens mapped to brand */
+    --background:               44 35% 92%;
+    --foreground:               0 0% 9%;
+    --card:                     0 0% 100%;
+    --card-foreground:          0 0% 9%;
+    --popover:                  0 0% 100%;
+    --popover-foreground:       0 0% 9%;
+    --primary:                  16 62% 59%;
+    --primary-foreground:       0 0% 100%;
+    --secondary:                44 20% 94%;
+    --secondary-foreground:     0 0% 9%;
+    --muted:                    44 15% 88%;
+    --muted-foreground:         30 4% 30%;
+    --accent:                   66 94% 67%;
+    --accent-foreground:        0 0% 9%;
+    --destructive:              14 77% 54%;
+    --destructive-foreground:   0 0% 100%;
+    --border:                   42 23% 81%;
+    --input:                    42 23% 81%;
+    --ring:                     16 62% 59%;
+    --radius:                   0.375rem;
+  }
+}
+
+
+@layer base {
+  * { border-color: var(--border-color); }
+  body {
+    background-color: var(--off-white);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+}
+
+
+@layer utilities {
+  /* Marquee ticker */
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .animate-scroll { animation: scroll 30s linear infinite; }
+
+
+  /* Card lift */
+  .card-hover { transition: transform 200ms ease, box-shadow 200ms ease; }
+  .card-hover:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+
+  /* Button press */
+  .button-hover { transition: all 150ms ease; }
+  .button-hover:hover { transform: scale(1.02); }
+
+
+  /* Colour helpers */
+  .text-brand-blue      { color: var(--brand-blue); }
+  .text-brand-blue-dark { color: var(--brand-blue-dark); }
+  .text-brand-gold      { color: var(--brand-gold); }
+  .text-brand-red       { color: var(--brand-red); }
+  .text-brand-green     { color: var(--brand-green); }
+  .text-text-primary    { color: var(--text-primary); }
+  .text-text-secondary  { color: var(--text-secondary); }
+  .text-text-muted      { color: var(--text-muted); }
+
+
+  .bg-brand-blue        { background-color: var(--brand-blue); }
+  .bg-brand-blue-dark   { background-color: var(--brand-blue-dark); }
+  .bg-brand-blue-light  { background-color: var(--brand-blue-light); }
+  .bg-brand-red         { background-color: var(--brand-red); }
+  .bg-light-grey        { background-color: var(--light-grey); }
+  .bg-off-white         { background-color: var(--off-white); }
+  .bg-text-primary      { background-color: var(--text-primary); }
+
+
+  .border-brand         { border-color: var(--border-color); }
+}
+
+
+/* ── Reusable form input base ─────────────────────────────── */
+@layer components {
+  .input-base {
+    @apply w-full px-3 py-2 border border-border-color rounded-sm text-sm text-text-primary bg-white placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-blue transition-shadow;
+  }
+}
+/* ── Marquee ticker (homepage) ─────────────────────── */
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
