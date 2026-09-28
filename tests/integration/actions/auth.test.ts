@@ -1,4 +1,3 @@
-// tests/integration/actions/auth.test.ts
 import { describe, it, expect, beforeEach, afterAll, vi } from "vitest"
 import { cookies } from "next/headers"
 import {
@@ -18,7 +17,6 @@ afterAll(async () => {
   await testDb.$disconnect()
 })
 
-// ─── REGISTER ────────────────────────────────────────────────────────────────
 
 describe("register", () => {
   it("creates a new user and redirects to /account", async () => {
@@ -94,7 +92,6 @@ describe("register", () => {
   })
 })
 
-// ─── LOGIN ────────────────────────────────────────────────────────────────────
 
 describe("login", () => {
   it("succeeds with correct credentials and redirects to /account", async () => {
@@ -132,7 +129,6 @@ describe("login", () => {
   })
 })
 
-// ─── LOGOUT ──────────────────────────────────────────────────────────────────
 
 describe("logout", () => {
   it("deletes the session from the database", async () => {
@@ -151,7 +147,6 @@ describe("logout", () => {
   })
 })
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function formData(obj: Record<string, string>): FormData {
   const fd = new FormData()

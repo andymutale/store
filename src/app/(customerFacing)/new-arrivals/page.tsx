@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/new-arrivals/page.tsx
 import db from "@/lib/db"
 import { ProductCard } from "../_components/ProductCard"
 

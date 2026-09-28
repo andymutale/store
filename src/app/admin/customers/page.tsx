@@ -19,11 +19,10 @@ async function CustomersTable() {
       id: true,
       email: true,
       createdAt: true,
-      orders: { 
-        select: { 
-          // ✅ FIXED: Selected the actual field from your schema
-          totalInCents: true 
-        } 
+      orders: {
+        select: {
+          totalInCents: true
+        }
       },
     },
     orderBy: { createdAt: "desc" },
@@ -50,7 +49,6 @@ async function CustomersTable() {
               <td className="px-4 py-3 font-medium text-text-primary">{u.email}</td>
               <td className="px-4 py-3 text-text-secondary">{formatNumber(u.orders.length)}</td>
               <td className="px-4 py-3 text-text-secondary">
-                {/* ✅ FIXED: Reducing u.orders using o.totalInCents */}
                 {formatCurrency(u.orders.reduce((sum, o) => sum + o.totalInCents, 0) / 100)}
               </td>
               <td className="px-4 py-3">

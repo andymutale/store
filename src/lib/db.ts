@@ -1,4 +1,3 @@
-// ─── PRISMA CLIENT SINGLETON ──────────────────────────────────────────────────
 // Reuses one PrismaClient instance across hot-reloads in dev.
 // Without this, dev mode creates a new connection on every file save.
 

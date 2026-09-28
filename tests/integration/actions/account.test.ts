@@ -1,4 +1,3 @@
-// tests/integration/actions/account.test.ts
 import { describe, it, expect, beforeEach, afterAll } from "vitest"
 import {
   clearDb, testDb, seedUser, setupCookieMock,
@@ -36,7 +35,6 @@ function formData(obj: Record<string, string | undefined>): FormData {
   return fd
 }
 
-// ─── UPDATE PROFILE ───────────────────────────────────────────────────────────
 
 describe("updateProfile", () => {
   it("updates first and last name", async () => {
@@ -59,7 +57,6 @@ describe("updateProfile", () => {
   })
 })
 
-// ─── CHANGE PASSWORD ──────────────────────────────────────────────────────────
 
 describe("changePassword", () => {
   it("updates the password hash when current password is correct", async () => {
@@ -104,7 +101,6 @@ describe("changePassword", () => {
   })
 })
 
-// ─── ADDRESSES ────────────────────────────────────────────────────────────────
 
 const VALID_ADDR = {
   firstName: "Thabo", lastName: "Nkosi",

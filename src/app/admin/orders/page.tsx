@@ -1,4 +1,3 @@
-// src/app/admin/orders/page.tsx
 import db from "@/lib/db"
 import { formatCurrency } from "@/lib/formatters"
 import { PageHeader } from "../_components/PageHeader"

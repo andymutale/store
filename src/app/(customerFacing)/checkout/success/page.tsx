@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/checkout/success/page.tsx
 import Link from "next/link"
 import { CheckCircle2, Package, Mail, ArrowRight } from "lucide-react"
 import db from "@/lib/db"

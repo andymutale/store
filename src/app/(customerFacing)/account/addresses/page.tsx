@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/account/addresses/page.tsx
 import { requireUser } from "@/lib/auth"
 import db from "@/lib/db"
 import { Star } from "lucide-react"

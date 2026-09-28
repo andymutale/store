@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/products/page.tsx
 import { Suspense } from "react"
 import db from "@/lib/db"
 import { ProductCard, ProductCardSkeleton } from "../_components/ProductCard"

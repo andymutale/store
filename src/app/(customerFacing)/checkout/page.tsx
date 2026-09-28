@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/checkout/page.tsx
 import { redirect } from "next/navigation"
 import { readCartSessionId, getCartItems, calcSubtotal, resolveUnitPrice } from "@/lib/cart"
 import db from "@/lib/db"

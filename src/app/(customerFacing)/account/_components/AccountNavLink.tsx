@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/account/_components/AccountNavLink.tsx
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"

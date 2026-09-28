@@ -2,7 +2,6 @@ import type { Config } from "tailwindcss"
 import defaultTheme from "tailwindcss/defaultTheme"
 
 const config: Config = {
-  // ✅ FIXED: Changed from ["class"] to a plain string to fix the TypeScript tuple mismatch
   darkMode: "class",
   content: ["./src/**/*.{ts,tsx}"],
   theme: {

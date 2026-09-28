@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// scripts/setup-test-db.js
 // Run once before integration tests: node scripts/setup-test-db.js
 // Also called automatically by the `test:integration` npm script.
 

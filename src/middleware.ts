@@ -1,64 +1,57 @@
-// src/middleware.ts
-// ─── ROUTE PROTECTION ─────────────────────────────────────────────────────────
-// /admin/*   — HTTP Basic Auth (single admin user via .env)
-// /account/* — Session cookie check; redirect to /login if absent
-
-import { NextRequest, NextResponse } from "next/server"
-import { isValidPassword } from "@/lib/isValidPassword"
-import { SESSION_COOKIE } from "@/lib/auth"
+import { NextRequest, NextResponse } from 'next/server'
+import { verifyPassword } from '@/lib/password'
+import { SESSION_COOKIE } from '@/lib/auth'
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  if (pathname.startsWith("/admin")) {
-    return handleAdminAuth(req)
-  }
-
-  if (pathname.startsWith("/account")) {
-    return handleCustomerAuth(req)
-  }
-}
-
-// ── Admin: HTTP Basic Auth ─────────────────────────────────────────────────
-
-async function handleAdminAuth(req: NextRequest) {
-  const authHeader = req.headers.get("authorization")
-  if (!authHeader) return unauthorised()
-
-  const [username, password] = Buffer.from(authHeader.split(" ")[1], "base64")
-    .toString()
-    .split(":")
-
-  const valid =
-    username === process.env.ADMIN_USERNAME &&
-    (await isValidPassword(password, process.env.HASHED_ADMIN_PASSWORD as string))
-
-  return valid ? NextResponse.next() : unauthorised()
-}
-
-function unauthorised() {
-  return new NextResponse("Unauthorized", {
-    status:  401,
-    headers: { "WWW-Authenticate": 'Basic realm="Admin Area"' },
-  })
-}
-
-// ── Customer: Session cookie check ────────────────────────────────────────
-// Full DB validation is done inside the /account layout (middleware can't use Prisma).
-// Here we just confirm the cookie exists — a fast edge check.
-
-function handleCustomerAuth(req: NextRequest) {
-  const token = req.cookies.get(SESSION_COOKIE)?.value
-
-  if (!token) {
-    const loginUrl = new URL("/login", req.url)
-    loginUrl.searchParams.set("redirect", req.nextUrl.pathname)
-    return NextResponse.redirect(loginUrl)
-  }
+  if (pathname.startsWith('/admin')) return handleAdminAuth(req)
+  if (pathname.startsWith('/account')) return handleCustomerAuth(req)
 
   return NextResponse.next()
 }
 
+async function handleAdminAuth(req: NextRequest) {
+  const header = req.headers.get('authorization')
+  if (!header?.startsWith('Basic ')) return unauthorized()
+
+  let username = ''
+  let password = ''
+
+  try {
+    const credentials = atob(header.slice(6))
+    const separator = credentials.indexOf(':')
+    if (separator < 0) return unauthorized()
+
+    username = credentials.slice(0, separator)
+    password = credentials.slice(separator + 1)
+  } catch {
+    return unauthorized()
+  }
+
+  const expectedHash = process.env.HASHED_ADMIN_PASSWORD
+  if (!expectedHash || username !== process.env.ADMIN_USERNAME) return unauthorized()
+
+  const valid = await verifyPassword(password, expectedHash)
+  return valid ? NextResponse.next() : unauthorized()
+}
+
+function unauthorized() {
+  return new NextResponse('Unauthorized', {
+    status: 401,
+    headers: { 'WWW-Authenticate': 'Basic realm="Admin Area"' },
+  })
+}
+
+function handleCustomerAuth(req: NextRequest) {
+  const token = req.cookies.get(SESSION_COOKIE)?.value
+  if (token) return NextResponse.next()
+
+  const loginUrl = new URL('/login', req.url)
+  loginUrl.searchParams.set('redirect', req.nextUrl.pathname)
+  return NextResponse.redirect(loginUrl)
+}
+
 export const config = {
-  matcher: ["/admin/:path*", "/account/:path*"],
+  matcher: ['/admin/:path*', '/account/:path*'],
 }

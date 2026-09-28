@@ -1,4 +1,3 @@
-// src/app/admin/brands/page.tsx
 import Link from "next/link"
 import db from "@/lib/db"
 import { PlusCircle, CheckCircle2, XCircle, Pencil } from "lucide-react"

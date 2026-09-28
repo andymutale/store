@@ -9,7 +9,7 @@
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "hash-password": "ts-node scripts/hashPassword.ts",
+    "hash-password": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/hashPassword.ts",
     "db:seed": "node prisma/seed.js",
     "db:setup": "npx prisma migrate dev --name init && node prisma/seed.js",
     "test": "vitest run",

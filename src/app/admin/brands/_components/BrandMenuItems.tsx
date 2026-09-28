@@ -1,5 +1,4 @@
 "use client"
-// src/app/admin/brands/_components/BrandMenuItems.tsx
 
 import { useTransition } from "react"
 import { useRouter } from "next/navigation"

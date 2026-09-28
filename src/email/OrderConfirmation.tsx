@@ -1,5 +1,3 @@
-// src/email/OrderConfirmation.tsx
-// ─── ORDER CONFIRMATION EMAIL ─────────────────────────────────────────────────
 // Sent via Resend from the Stripe webhook after payment_intent.succeeded.
 // Preview: npx react-email dev (serves at localhost:3000 with hot-reload)
 

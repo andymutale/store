@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/products/[slug]/_components/ProductActions.tsx
 // Manages variant selection + add to cart — kept in one file so they share state.
 
 import { useState } from "react"
@@ -16,7 +15,6 @@ export type Variant = {
   isActive:     boolean
 }
 
-// ─── SIZE PICKER ──────────────────────────────────────────────────────────────
 
 type SizePickerProps = {
   variants:       Variant[]
@@ -109,7 +107,6 @@ export function SizePicker({ variants, selected, onSelect, basePrice }: SizePick
   )
 }
 
-// ─── PRODUCT ACTIONS (size picker + add to cart together) ─────────────────────
 
 type ProductActionsProps = {
   variants:  Variant[]
@@ -149,7 +146,6 @@ export function ProductActions({ variants, basePrice }: ProductActionsProps) {
   )
 }
 
-// ─── IMAGE GALLERY ────────────────────────────────────────────────────────────
 
 type ImageGalleryProps = {
   images: { url: string; altText: string | null }[]

@@ -1,5 +1,4 @@
 "use client"
-// src/app/admin/orders/_components/OrderStatusForm.tsx
 
 import { useState, useTransition } from "react"
 import { updateOrderStatus } from "../../_actions/orders"

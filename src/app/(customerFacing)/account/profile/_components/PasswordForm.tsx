@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/account/profile/_components/PasswordForm.tsx
 
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"
@@ -38,7 +37,6 @@ export function PasswordForm() {
   )
 }
 
-// ─── SHARED ACROSS PROFILE FORMS ─────────────────────────────────────────────
 
 export function SaveButton({ label }: { label: string }) {
   const { pending } = useFormStatus()

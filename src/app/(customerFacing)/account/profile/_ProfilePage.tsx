@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/account/profile/_ProfilePage.tsx
 import { requireUser } from "@/lib/auth"
 import { ProfileForm } from "./_components/ProfileForm"
 import { PasswordForm } from "./_components/PasswordForm"

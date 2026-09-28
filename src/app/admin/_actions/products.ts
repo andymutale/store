@@ -7,7 +7,6 @@ import { redirect, notFound } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { slugify } from "@/lib/formatters"
 
-// ─── SCHEMAS ────────────────────────────────────────────────────────────────
 
 const variantSchema = z.object({
   id:           z.string().optional(),
@@ -39,7 +38,6 @@ const productSchema = z.object({
   variants:               z.string().min(1, "At least one variant is required"),
 })
 
-// ─── HELPERS ────────────────────────────────────────────────────────────────
 
 function revalidate() {
   revalidatePath("/admin/products")
@@ -69,7 +67,6 @@ function normalizeFormData(formData: FormData) {
   return raw
 }
 
-// ─── ACTIONS ────────────────────────────────────────────────────────────────
 
 export async function addProduct(prevState: unknown, formData: FormData) {
   const result = productSchema.safeParse(normalizeFormData(formData))
@@ -202,21 +199,19 @@ export async function deleteProduct(id: string) {
   revalidate()
 }
 
-// ─── IMAGE ACTIONS ──────────────────────────────────────────────────────────
 
-// ✅ IMPLEMENTED BEST PRACTICE: Performs defensive disk unlinking prior to database deletion
+// Delete the file from disk before the DB row, so a failed unlink doesn't
+// leave the row pointing at a file that's already gone.
 export async function deleteProductImage(id: string) {
   const image = await db.productImage.findUnique({ where: { id } })
   if (!image) return notFound()
 
-  // Remove physical file safely from storage directory
   await fs.unlink(`public${image.url}`).catch((err) => {
     console.warn(`File system unlinking skipped or failed for: ${image.url}`, err.message)
   })
 
-  // Delete matching row from database
   await db.productImage.delete({ where: { id } })
-  
+
   revalidate()
 }
 

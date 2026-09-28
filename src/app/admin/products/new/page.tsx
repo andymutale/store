@@ -1,4 +1,3 @@
-// src/app/admin/products/new/page.tsx
 import db from "@/lib/db"
 import { PageHeader } from "../../_components/PageHeader"
 import { ProductForm } from "../_components/ProductForm"

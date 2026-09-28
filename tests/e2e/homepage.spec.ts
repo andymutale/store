@@ -1,4 +1,3 @@
-// tests/e2e/homepage.spec.ts
 import { test, expect } from "@playwright/test"
 
 test.describe("Homepage", () => {

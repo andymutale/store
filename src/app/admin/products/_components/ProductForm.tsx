@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react" // ✅ Added useTransition
+import { useState, useTransition } from "react"
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"
 import Image from "next/image"
@@ -76,15 +76,12 @@ export function ProductForm({ product, categories, brands, action }: Props) {
   const [priceInCents, setPriceInCents] = useState<number | undefined>(product?.priceInCents)
   const [nameValue, setNameValue]       = useState(product?.name ?? "")
   const [deletingImageId, setDeletingImageId] = useState<string | null>(null)
-  
-  // ✅ Initialize transition hook for handling asynchronous server mutations
   const [isPending, startTransition] = useTransition()
 
   // Organise categories into parent → children for grouped select
   const topLevel = categories.filter(c => !c.parentId)
   const childrenOf = (id: string) => categories.filter(c => c.parentId === id)
 
-  // ✅ Fixed parameter mapping and wrapped inside UI transition tracker
   function handleDeleteImage(imageId: string) {
     if (!product?.id) return
 
@@ -100,7 +97,6 @@ export function ProductForm({ product, categories, brands, action }: Props) {
     })
   }
 
-  // ✅ Wrapped background data re-index modifications in structural state updates
   function handleSetPrimary(imageId: string) {
     if (!product?.id) return
 
@@ -301,7 +297,6 @@ export function ProductForm({ product, categories, brands, action }: Props) {
   )
 }
 
-// ─── SUB-COMPONENTS ──────────────────────────────────────────────────────────
 
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (

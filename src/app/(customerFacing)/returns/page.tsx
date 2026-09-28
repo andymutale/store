@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/returns/page.tsx
 import Link from "next/link"
 
 export default function ReturnsPage() {

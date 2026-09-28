@@ -1,4 +1,3 @@
-// tests/e2e/auth.spec.ts
 import { test, expect, type Page } from "@playwright/test"
 
 // Unique email per test run to avoid conflicts

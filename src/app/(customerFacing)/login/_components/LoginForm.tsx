@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/login/_components/LoginForm.tsx
 
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"

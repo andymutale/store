@@ -1,4 +1,3 @@
-// tests/e2e/cart.spec.ts
 import { test, expect, type Page } from "@playwright/test"
 
 // Navigate to the first available product and add it to the cart

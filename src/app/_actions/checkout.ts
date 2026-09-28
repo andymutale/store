@@ -1,12 +1,10 @@
 "use server"
-// src/app/_actions/checkout.ts
 
 import db from "@/lib/db"
 import { stripe } from "@/lib/stripe"
 import { getOrCreateCartSessionId, getCartItems, calcSubtotal, resolveUnitPrice } from "@/lib/cart"
 import { z } from "zod"
 
-// ─── VALIDATION ───────────────────────────────────────────────────────────────
 
 const addressSchema = z.object({
   firstName:    z.string().min(1, "First name required"),
@@ -22,19 +20,10 @@ const addressSchema = z.object({
   customerNote: z.string().optional(),
 })
 
-// ─── RESULT TYPE ──────────────────────────────────────────────────────────────
 
 export type CreateOrderResult =
   | { ok: true;  clientSecret: string; orderNumber: string }
   | { ok: false; error: string; fieldErrors?: Record<string, string[]> }
-
-// ─── CREATE ORDER ─────────────────────────────────────────────────────────────
-// 1. Validate address fields
-// 2. Fetch cart + verify stock
-// 3. Look up shipping rate
-// 4. Build Order + OrderItems in DB (status: pending)
-// 5. Create Stripe PaymentIntent (ZAR)
-// 6. Return clientSecret to the client for Stripe Elements
 
 export async function createOrder(formData: FormData): Promise<CreateOrderResult> {
   // 1. Parse + validate
@@ -83,8 +72,7 @@ export async function createOrder(formData: FormData): Promise<CreateOrderResult
   const orderNumber = `BB-${year}-${String(count + 1).padStart(5, "0")}`
 
   // 6. Resolve user
-  // We create a placeholder User record keyed on email (guest checkout).
-  // When full auth is added, this merges with the real User on login.
+  // Guest checkout reuses an existing account or creates an account record without a password.
   let user = await db.user.findUnique({ where: { email: data.email } })
   if (!user) {
     user = await db.user.create({

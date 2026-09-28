@@ -1,4 +1,3 @@
-// tests/integration/actions/checkout.test.ts
 import { describe, it, expect, beforeEach, afterAll, vi } from "vitest"
 import { cookies } from "next/headers"
 import {
@@ -82,7 +81,6 @@ function formData(obj: Record<string, string>): FormData {
   return fd
 }
 
-// ─── VALIDATION ───────────────────────────────────────────────────────────────
 
 describe("createOrder — validation", () => {
   it("returns fieldErrors for missing required fields", async () => {
@@ -104,7 +102,6 @@ describe("createOrder — validation", () => {
   })
 })
 
-// ─── STOCK VALIDATION ─────────────────────────────────────────────────────────
 
 describe("createOrder — stock", () => {
   it("returns an error when a cart item exceeds available stock", async () => {
@@ -116,7 +113,6 @@ describe("createOrder — stock", () => {
   })
 })
 
-// ─── ORDER CREATION ───────────────────────────────────────────────────────────
 
 describe("createOrder — success", () => {
   it("returns ok with clientSecret and orderNumber", async () => {

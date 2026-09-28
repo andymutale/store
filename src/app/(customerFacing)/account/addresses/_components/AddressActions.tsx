@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/account/addresses/_components/AddressActions.tsx
 
 import { useTransition } from "react"
 import { useRouter } from "next/navigation"

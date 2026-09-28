@@ -1,5 +1,4 @@
 "use client"
-// src/app/admin/brands/_components/BrandForm.tsx
 
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"

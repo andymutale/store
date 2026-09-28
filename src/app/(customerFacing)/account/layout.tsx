@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/account/layout.tsx
 import Link from "next/link"
 import { requireUser } from "@/lib/auth"
 import { LayoutDashboard, ShoppingBag, MapPin, User } from "lucide-react"

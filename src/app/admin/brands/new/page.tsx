@@ -1,4 +1,3 @@
-// src/app/admin/brands/new/page.tsx
 import { PageHeader } from "../../_components/PageHeader"
 import { BrandForm } from "../_components/BrandForm"
 import { addBrand } from "../../_actions/brands"

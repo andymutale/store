@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/cart/page.tsx
 import Image from "next/image"
 import Link from "next/link"
 import { ShoppingCart, ArrowRight, Tag } from "lucide-react"

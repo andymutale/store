@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/deals/page.tsx
 import db from "@/lib/db"
 import { ProductCard } from "../_components/ProductCard"
 import { Tag } from "lucide-react"

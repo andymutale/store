@@ -1,6 +1,4 @@
 "use client"
-// src/app/(customerFacing)/checkout/_components/CheckoutForm.tsx
-// ─── TWO-STEP CHECKOUT ────────────────────────────────────────────────────────
 // Step 1 "details":  Address form + shipping selector + order summary
 // Step 2 "payment":  Stripe PaymentElement replaces the form + same summary
 //
@@ -21,7 +19,6 @@ import { Lock, ChevronRight, Truck, RotateCcw } from "lucide-react"
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string)
 
-// ─── TYPES ────────────────────────────────────────────────────────────────────
 
 type CartLine = {
   id:               string
@@ -70,7 +67,6 @@ const SA_PROVINCES = [
   { code: "WC", name: "Western Cape" },
 ]
 
-// ─── OUTER WRAPPER ────────────────────────────────────────────────────────────
 
 export function CheckoutForm({ cartLines, subtotalInCents, shippingZones }: Props) {
   const [step,          setStep]          = useState<"details" | "payment">("details")
@@ -355,7 +351,6 @@ export function CheckoutForm({ cartLines, subtotalInCents, shippingZones }: Prop
   )
 }
 
-// ─── PAYMENT STEP ─────────────────────────────────────────────────────────────
 // Rendered inside <Elements> so it can use useStripe / useElements.
 
 function PaymentStep({ orderNumber, totalInCents }: { orderNumber: string; totalInCents: number }) {
@@ -412,7 +407,6 @@ function PaymentStep({ orderNumber, totalInCents }: { orderNumber: string; total
   )
 }
 
-// ─── SMALL HELPERS ────────────────────────────────────────────────────────────
 
 function StepBadge({ n, active, done, label }: { n: number; active: boolean; done: boolean; label: string }) {
   return (

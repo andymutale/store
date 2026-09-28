@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/products/_components/SortSelect.tsx
 
 const SORT_OPTIONS = [
   { value: "newest",     label: "Newest first" },

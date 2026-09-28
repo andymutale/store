@@ -1,4 +1,3 @@
-// tests/unit/lib/formatters.test.ts
 import { describe, it, expect } from "vitest"
 import { formatCurrency, formatNumber, slugify } from "@/lib/formatters"
 

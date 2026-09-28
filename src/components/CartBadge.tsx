@@ -1,4 +1,3 @@
-// src/components/CartBadge.tsx
 // Server component — rendered in (customerFacing)/layout.tsx alongside <Header>.
 // Reads the cart session cookie and queries the DB count server-side,
 // so the badge is always accurate on page load without client-side fetch.

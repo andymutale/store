@@ -1,4 +1,3 @@
-// tests/integration/actions/cart.test.ts
 import { describe, it, expect, beforeEach, afterAll } from "vitest"
 import { cookies } from "next/headers"
 import {
@@ -25,7 +24,6 @@ async function setup() {
   return seedProduct({ categoryId: category.id, brandId: brand.id, stock: 10 })
 }
 
-// ─── ADD TO CART ─────────────────────────────────────────────────────────────
 
 describe("addToCart", () => {
   it("creates a cart item for a new variant", async () => {
@@ -81,7 +79,6 @@ describe("addToCart", () => {
   })
 })
 
-// ─── REMOVE FROM CART ────────────────────────────────────────────────────────
 
 describe("removeFromCart", () => {
   it("deletes the cart item", async () => {
@@ -111,7 +108,6 @@ describe("removeFromCart", () => {
   })
 })
 
-// ─── UPDATE CART QUANTITY ────────────────────────────────────────────────────
 
 describe("updateCartQuantity", () => {
   it("updates the quantity", async () => {

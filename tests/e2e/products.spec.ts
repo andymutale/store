@@ -1,4 +1,3 @@
-// tests/e2e/products.spec.ts
 import { test, expect } from "@playwright/test"
 
 test.describe("Product Listing Page", () => {

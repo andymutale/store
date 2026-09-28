@@ -1,4 +1,3 @@
-// tests/e2e/checkout.spec.ts
 // Uses Stripe test mode. The server must have STRIPE_SECRET_KEY=sk_test_...
 // Stripe test card: 4242 4242 4242 4242, any future date, any CVC.
 import { test, expect, type Page } from "@playwright/test"
@@ -123,8 +122,8 @@ test.describe("Checkout success page", () => {
   })
 
   test("shows order details for a valid order number", async ({ page }) => {
-    // This test requires a real order in the DB — see integration tests for full coverage.
-    // Here we just verify the page handles a missing order gracefully.
+    // Real order lookups are covered by the integration tests — this just checks
+    // the page doesn't blow up when the order isn't found.
     const res = await page.goto("/checkout/success?order_number=BB-0000-00000")
     expect(res?.status()).toBeLessThan(400)
     await expect(page.getByText(/payment received|thank you/i)).toBeVisible()

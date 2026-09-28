@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/account/profile/_components/ProfileForm.tsx
 
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"

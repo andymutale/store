@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/account/addresses/[id]/edit/page.tsx
 import { notFound, redirect } from "next/navigation"
 import { requireUser } from "@/lib/auth"
 import db from "@/lib/db"

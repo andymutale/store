@@ -1,4 +1,3 @@
-// tests/unit/lib/cart.test.ts
 import { describe, it, expect } from "vitest"
 import { calcSubtotal, resolveUnitPrice } from "@/lib/cart"
 import type { CartLineItem } from "@/lib/cart"

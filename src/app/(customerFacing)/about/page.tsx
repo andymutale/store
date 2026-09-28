@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/about/page.tsx
 import Link from "next/link"
 
 export default function AboutPage() {

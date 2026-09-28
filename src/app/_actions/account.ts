@@ -1,5 +1,4 @@
 "use server"
-// src/app/_actions/account.ts
 
 import { z } from "zod"
 import { revalidatePath } from "next/cache"
@@ -7,7 +6,6 @@ import { redirect } from "next/navigation"
 import db from "@/lib/db"
 import { getCurrentUser, hashPassword, verifyPassword } from "@/lib/auth"
 
-// ─── GUARD ────────────────────────────────────────────────────────────────────
 
 async function authedUser() {
   const user = await getCurrentUser()
@@ -15,7 +13,6 @@ async function authedUser() {
   return user
 }
 
-// ─── PROFILE ──────────────────────────────────────────────────────────────────
 
 const profileSchema = z.object({
   firstName: z.string().min(1, "First name required"),
@@ -38,7 +35,6 @@ export async function updateProfile(
   return {}
 }
 
-// ─── CHANGE PASSWORD ──────────────────────────────────────────────────────────
 
 const pwSchema = z.object({
   current: z.string().min(1, "Current password required"),
@@ -71,7 +67,6 @@ export async function changePassword(
   return {}
 }
 
-// ─── ADDRESSES ────────────────────────────────────────────────────────────────
 
 const addressSchema = z.object({
   label:     z.string().optional(),

@@ -1,4 +1,3 @@
-// ─── STRIPE SERVER CLIENT ─────────────────────────────────────────────────────
 // Only import this in server files (Server Components, Server Actions, Route Handlers).
 // For client-side Stripe, use loadStripe() from @stripe/stripe-js directly.
 

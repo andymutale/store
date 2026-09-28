@@ -1,11 +1,10 @@
-// tests/unit/lib/auth.test.ts
 import { describe, it, expect } from "vitest"
 import { hashPassword, verifyPassword } from "@/lib/auth"
 
 describe("hashPassword / verifyPassword", () => {
   it("hashes a password and verifies it correctly", async () => {
     const hash = await hashPassword("mysecretpassword")
-    expect(hash).toContain(":")           // format: salt:hash
+    expect(hash.startsWith("pbkdf2$")).toBe(true)
     const valid = await verifyPassword("mysecretpassword", hash)
     expect(valid).toBe(true)
   })
@@ -20,7 +19,6 @@ describe("hashPassword / verifyPassword", () => {
     const hash1 = await hashPassword("samepassword")
     const hash2 = await hashPassword("samepassword")
     expect(hash1).not.toBe(hash2)
-    // But both should verify correctly
     expect(await verifyPassword("samepassword", hash1)).toBe(true)
     expect(await verifyPassword("samepassword", hash2)).toBe(true)
   })

@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/login/page.tsx
 import Link from "next/link"
 import { getCurrentUser } from "@/lib/auth"
 import { redirect } from "next/navigation"

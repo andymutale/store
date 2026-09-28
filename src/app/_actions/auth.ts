@@ -1,12 +1,10 @@
 "use server"
-// src/app/_actions/auth.ts
 
 import { z } from "zod"
 import { redirect } from "next/navigation"
 import db from "@/lib/db"
-import { hashPassword, verifyPassword, createSession, deleteSession } from "@/lib/auth"
+import { hashPassword, verifyPassword, needsRehash, createSession, deleteSession } from "@/lib/auth"
 
-// ─── REGISTER ─────────────────────────────────────────────────────────────────
 
 const registerSchema = z.object({
   firstName: z.string().min(1, "First name required"),
@@ -60,7 +58,6 @@ export async function register(
   redirect("/account")
 }
 
-// ─── LOGIN ────────────────────────────────────────────────────────────────────
 
 const loginSchema = z.object({
   email:    z.string().email("Valid email required"),
@@ -92,11 +89,17 @@ export async function login(
   if (!user || !user.passwordHash) return invalid
   if (!(await verifyPassword(password, user.passwordHash))) return invalid
 
+  if (needsRehash(user.passwordHash)) {
+    await db.user.update({
+      where: { id: user.id },
+      data: { passwordHash: await hashPassword(password) },
+    })
+  }
+
   await createSession(user.id)
   redirect(redirectTo)
 }
 
-// ─── LOGOUT ───────────────────────────────────────────────────────────────────
 
 export async function logout() {
   await deleteSession()

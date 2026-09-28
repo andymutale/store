@@ -1,4 +1,3 @@
-// ─── FORMATTERS ───────────────────────────────────────────────────────────────
 // Always pass prices in RAND CENTS. Divide by 100 before calling formatCurrency.
 // e.g. formatCurrency(264000 / 100) → "R 2,640"
 

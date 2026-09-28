@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/cart/_components/CartLineControls.tsx
 
 import { useTransition } from "react"
 import { Minus, Plus, Trash2, Loader2 } from "lucide-react"

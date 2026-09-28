@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/privacy/page.tsx
 export default function PrivacyPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">

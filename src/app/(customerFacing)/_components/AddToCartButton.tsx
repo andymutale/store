@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/_components/AddToCartButton.tsx
 
 import { useState, useTransition } from "react"
 import { ShoppingCart, Check, Loader2 } from "lucide-react"

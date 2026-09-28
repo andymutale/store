@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/products/_components/FilterSidebar.tsx
 
 import { useRouter, usePathname } from "next/navigation"
 import { X } from "lucide-react"

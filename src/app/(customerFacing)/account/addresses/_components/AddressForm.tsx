@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/account/addresses/_components/AddressForm.tsx
 
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"

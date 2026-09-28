@@ -1,11 +1,9 @@
 "use server"
-// src/app/_actions/cart.ts
 
 import db from "@/lib/db"
 import { getOrCreateCartSessionId, readCartSessionId } from "@/lib/cart"
 import { revalidatePath } from "next/cache"
 
-// ─── ADD TO CART ──────────────────────────────────────────────────────────────
 // Called from the PDP AddToCartButton. Returns the new total item count.
 export async function addToCart(variantId: string, quantity = 1): Promise<{ count: number }> {
   const sessionId = await getOrCreateCartSessionId()
@@ -40,7 +38,6 @@ export async function addToCart(variantId: string, quantity = 1): Promise<{ coun
   return { count: agg._sum.quantity ?? 0 }
 }
 
-// ─── REMOVE FROM CART ─────────────────────────────────────────────────────────
 export async function removeFromCart(cartItemId: string) {
   const sessionId = await readCartSessionId()
   if (!sessionId) return
@@ -49,7 +46,6 @@ export async function removeFromCart(cartItemId: string) {
   revalidatePath("/cart")
 }
 
-// ─── UPDATE QUANTITY ──────────────────────────────────────────────────────────
 export async function updateCartQuantity(cartItemId: string, quantity: number) {
   const sessionId = await readCartSessionId()
   if (!sessionId) return
@@ -70,7 +66,6 @@ export async function updateCartQuantity(cartItemId: string, quantity: number) {
   revalidatePath("/cart")
 }
 
-// ─── CLEAR CART ───────────────────────────────────────────────────────────────
 // Called by the webhook after a successful payment.
 export async function clearCartBySession(sessionId: string) {
   await db.cartItem.deleteMany({ where: { sessionId } })

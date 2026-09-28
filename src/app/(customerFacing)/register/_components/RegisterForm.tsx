@@ -1,5 +1,4 @@
 "use client"
-// src/app/(customerFacing)/register/_components/RegisterForm.tsx
 
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"

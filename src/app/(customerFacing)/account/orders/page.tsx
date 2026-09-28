@@ -1,4 +1,3 @@
-// src/app/(customerFacing)/account/orders/page.tsx
 import Link from "next/link"
 import { requireUser } from "@/lib/auth"
 import db from "@/lib/db"

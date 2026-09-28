@@ -1,9 +1,7 @@
-// test-utils/index.ts
 import { vi } from "vitest"
 import { PrismaClient } from "@prisma/client"
 import { cookies } from "next/headers"
 
-// ─── TEST DATABASE ─────────────────────────────────────────────────────────
 // Points to prisma/test.db (set in vitest.setup.ts via DATABASE_URL).
 // Run `npx prisma migrate deploy` once before the test suite.
 
@@ -29,7 +27,6 @@ export async function clearDb() {
   await testDb.user.deleteMany()
 }
 
-// ─── COOKIE MOCK HELPERS ───────────────────────────────────────────────────
 
 type MockCookieStore = {
   get:    ReturnType<typeof vi.fn>
@@ -57,14 +54,12 @@ export function getCookieValue(name: string): string | undefined {
   return call?.[1]
 }
 
-// ─── REDIRECT ASSERTION ────────────────────────────────────────────────────
 
 /** Assert a Server Action redirected to a given URL. */
 export async function expectRedirect(action: () => Promise<unknown>, expectedUrl: string) {
   await expect(action()).rejects.toThrow(`NEXT_REDIRECT:${expectedUrl}`)
 }
 
-// ─── SEED HELPERS ─────────────────────────────────────────────────────────
 
 /** Create a minimal category for tests. */
 export async function seedCategory(overrides: Partial<Parameters<typeof testDb.category.create>[0]["data"]> = {}) {
